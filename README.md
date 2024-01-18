@@ -12,3 +12,6 @@ Buying things online is at an all time high. In this world of people selling wha
 - Three separate pages on different ways to view products, as well as a personal page where you can access your personal settings and information
 - You can connect through a chat bar with those who have reviewed a product, chat will be updated in realtime
 - Those who post products are allowed to respond to reviews on their own products, but cannot post reviews on their own products
+
+### Design 
+
