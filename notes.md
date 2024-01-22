@@ -6,3 +6,4 @@ Gitlens is very helpful.
 - Not as hard to create as I imagined
 - ssh keys stored as a file
 - ssh -i production.pem ubuntu@54.158.215.142
+
