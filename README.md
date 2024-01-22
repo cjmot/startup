@@ -24,3 +24,5 @@ Buying things online is at an all-time high. In this world of people selling wha
 ### Design 
 
 ![EZ-DROP Sketch](ez_drop_mock.png)
+
+![kingslandui](kingslandui.jpg)
