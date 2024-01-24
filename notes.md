@@ -1,6 +1,3 @@
-Git can be very confusing, but iit is a lot simpler than I originally made it out to be.
-
-Gitlens is very helpful.
 
 **AWS Server**
 - Not as hard to create as I imagined
@@ -14,6 +11,7 @@ Gitlens is very helpful.
   - Configuration file - Contains the definitions for routing HTTP requests that Caddy receives. This is used to determine the location where static HTML files are loaded from, and also to proxy requests into the services you will create later.
   - HTML file = This is the directory of files that Caddy serves up when requests are made to the root or your web server.
 
+1/24/2024
 **Domain Name registration**
 - https://github.com/webprogramming260/.github/blob/main/profile/webServers/amazonWebServicesRoute53/amazonWebServicesRoute53.md
 - route 53 in aws to create domain, once there, create 2 new records, one for the domain, one for subdomains.
@@ -45,7 +43,8 @@ Gitlens is very helpful.
 - Modern browsers expect web servers to exclusively use HTTPS for all communication.
 - next version of HTTP(v3) only supports secure connections. - you should always support HTTPS for any web application that you build.
 - obtain and renew web certificates by enabling ACME protocol for you web server and communicating with Let's Encrypt to generate the needed certificates.
-*More Caddy*
+
+- *More Caddy*
 - Caddy has ACME support built into it by default, all you need to do is configure caddy with the domain name for your web server. 
 - go into ubuntu, change file so the :80 and references to domain name are the domain name, then save (esc, then :wq), then restart caddy (sudo service caddy restart)
 
