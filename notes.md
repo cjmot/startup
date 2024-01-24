@@ -2,7 +2,7 @@
 **AWS Server**
 - Not as hard to create as I imagined
 - ssh keys stored as a file
-- ssh -i production.pem ubuntu@54.158.215.142
+- ssh -i production.pem ubuntu@shopkingsland.click
 
 **Caddy** 
 - Caddy is a web service that listens for incoming HTTP requests
