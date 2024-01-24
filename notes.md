@@ -48,3 +48,4 @@ Gitlens is very helpful.
 *More Caddy*
 - Caddy has ACME support built into it by default, all you need to do is configure caddy with the domain name for your web server. 
 - go into ubuntu, change file so the :80 and references to domain name are the domain name, then save (esc, then :wq), then restart caddy (sudo service caddy restart)
+
