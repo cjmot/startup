@@ -44,7 +44,7 @@
 - next version of HTTP(v3) only supports secure connections. - you should always support HTTPS for any web application that you build.
 - obtain and renew web certificates by enabling ACME protocol for you web server and communicating with Let's Encrypt to generate the needed certificates.
 
-- *More Caddy*
+**More Caddy**
 - Caddy has ACME support built into it by default, all you need to do is configure caddy with the domain name for your web server. 
 - go into ubuntu, change file so the :80 and references to domain name are the domain name, then save (esc, then :wq), then restart caddy (sudo service caddy restart)
 
