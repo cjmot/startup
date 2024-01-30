@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="da0aa36a-9c14-4848-bb9a-8ebf351f0c8d" name="Changes" comment="Added *favicon" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;cjmot&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="7d895723-3795-4baa-8e8a-51138295fa61" />
+        <option name="url" value="https://github.com/cjmot/startup" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2b8iSlxQT8nwrPPvaJ68vGzoBoR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Cooper Motyer/OneDrive - Brigham Young University/winter_24/cs260/startup-html",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Cooper Motyer\OneDrive - Brigham Young University\winter_24\cs260\startup-html" />
+      <recent name="C:\Users\Cooper Motyer\OneDrive - Brigham Young University\winter_24\cs260" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Cooper Motyer\OneDrive - Brigham Young University\winter_24\cs260\startup-html" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da0aa36a-9c14-4848-bb9a-8ebf351f0c8d" name="Changes" comment="" />
+      <created>1705603110528</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705603110528</updated>
+      <workItem from="1705603111876" duration="575000" />
+      <workItem from="1705623358133" duration="1607000" />
+      <workItem from="1705639874015" duration="659000" />
+      <workItem from="1705936530203" duration="630000" />
+      <workItem from="1706124522498" duration="7155000" />
+      <workItem from="1706217830014" duration="8568000" />
+      <workItem from="1706569224307" duration="2363000" />
+    </task>
+    <task id="LOCAL-00001" summary="updated README.md to include technology representation">
+      <option name="closed" value="true" />
+      <created>1705603535992</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705603535992</updated>
+    </task>
+    <task id="LOCAL-00002" summary="updated README.md to include technology representation">
+      <option name="closed" value="true" />
+      <created>1705936552551</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705936552551</updated>
+    </task>
+    <task id="LOCAL-00003" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706130093286</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1706130093286</updated>
+    </task>
+    <task id="LOCAL-00004" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706130290778</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706130290778</updated>
+    </task>
+    <task id="LOCAL-00005" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706130389237</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1706130389237</updated>
+    </task>
+    <task id="LOCAL-00006" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706130458765</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1706130458765</updated>
+    </task>
+    <task id="LOCAL-00007" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706130514689</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1706130514689</updated>
+    </task>
+    <task id="LOCAL-00008" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706132938021</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1706132938021</updated>
+    </task>
+    <task id="LOCAL-00009" summary="notes.md modified">
+      <option name="closed" value="true" />
+      <created>1706220081326</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1706220081326</updated>
+    </task>
+    <task id="LOCAL-00010" summary="https://simon.shopkingsland.click created, basic html files made">
+      <option name="closed" value="true" />
+      <created>1706220189799</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1706220189799</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Basic html files created">
+      <option name="closed" value="true" />
+      <created>1706220303355</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1706220303355</updated>
+    </task>
+    <task id="LOCAL-00012" summary="HTML files made with basic layout">
+      <option name="closed" value="true" />
+      <created>1706220490839</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1706220490839</updated>
+    </task>
+    <task id="LOCAL-00013" summary="HTML titles fixed">
+      <option name="closed" value="true" />
+      <created>1706220550365</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1706220550365</updated>
+    </task>
+    <task id="LOCAL-00014" summary="index.html and create_account.html updated">
+      <option name="closed" value="true" />
+      <created>1706221332358</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1706221332358</updated>
+    </task>
+    <task id="LOCAL-00015" summary="cleaned up html files">
+      <option name="closed" value="true" />
+      <created>1706222671701</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1706222671701</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added to shop.html">
+      <option name="closed" value="true" />
+      <created>1706223569620</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706223569620</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added profile.html">
+      <option name="closed" value="true" />
+      <created>1706223696123</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1706223696123</updated>
+    </task>
+    <task id="LOCAL-00018" summary="changes to cart.html and added checkout.html">
+      <option name="closed" value="true" />
+      <created>1706225708559</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1706225708559</updated>
+    </task>
+    <task id="LOCAL-00019" summary="changes to checkout.html">
+      <option name="closed" value="true" />
+      <created>1706225908984</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1706225908984</updated>
+    </task>
+    <task id="LOCAL-00020" summary="changes to about.html">
+      <option name="closed" value="true" />
+      <created>1706226195978</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1706226195978</updated>
+    </task>
+    <task id="LOCAL-00021" summary="changes to profile.html">
+      <option name="closed" value="true" />
+      <created>1706226279384</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1706226279384</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Made startup directory">
+      <option name="closed" value="true" />
+      <created>1706226422920</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1706226422920</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Added Flavicon">
+      <option name="closed" value="true" />
+      <created>1706569362075</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1706569362075</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Added Flavicon">
+      <option name="closed" value="true" />
+      <created>1706569842151</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1706569842151</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added *favicon">
+      <option name="closed" value="true" />
+      <created>1706570220652</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1706570220652</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updated README.md to include technology representation" />
+    <MESSAGE value="notes.md modified" />
+    <MESSAGE value="https://simon.shopkingsland.click created, basic html files made" />
+    <MESSAGE value="Basic html files created" />
+    <MESSAGE value="HTML files made with basic layout" />
+    <MESSAGE value="HTML titles fixed" />
+    <MESSAGE value="index.html and create_account.html updated" />
+    <MESSAGE value="cleaned up html files" />
+    <MESSAGE value="Added to shop.html" />
+    <MESSAGE value="Added profile.html" />
+    <MESSAGE value="changes to cart.html and added checkout.html" />
+    <MESSAGE value="changes to checkout.html" />
+    <MESSAGE value="changes to about.html" />
+    <MESSAGE value="changes to profile.html" />
+    <MESSAGE value="Made startup directory" />
+    <MESSAGE value="Added Flavicon" />
+    <MESSAGE value="Added *favicon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added *favicon" />
+  </component>
+</project>
