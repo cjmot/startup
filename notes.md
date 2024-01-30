@@ -48,3 +48,48 @@
 - Caddy has ACME support built into it by default, all you need to do is configure caddy with the domain name for your web server. 
 - go into ubuntu, change file so the :80 and references to domain name are the domain name, then save (esc, then :wq), then restart caddy (sudo service caddy restart)
 
+**The Console**
+- console window aka command line, shell, or terminal.
+  - Essential web development tool.
+  - provides access to the file system and allows for the execution of command line applications.
+  - many to choose from, all OS come with a default. but for the best one installation needed.
+- __Console Application__
+  - must by POSIX compliant - supports standard set of console commands. 
+    - mac and linux support POSIX
+    - Windows needs git bash
+    - dont use git command, cmd, or powershell.
+- __Simple Commands__
+  - __echo__ - Output the parameters of the command
+  - __cd__ - Change directory
+  - __mkdir__ - Make directory
+  - __rmdir__ - Remove directory
+  - __rm__ - Remove file(s)
+  - __mv__ - Move file(s)
+  - __cp__ - Copy files
+  - __ls__ - List files
+  - __curl__ - Command line client URL browser
+  - __grep__ - Regular expression search
+  - __find__ - Find files
+  - __top__ - View running processes with CPU and memory usage
+  - __df__ - View disk statistics
+  - __cat__ - Output the contents of a file
+  - __less__ - Interactively output the contents of a file
+  - __wc__ - Count the words in a file
+  - __ps__ - View the currently running processes
+  - __kill__ - Kill a currently running process
+  - __sudo__ - Execute a command as a super user (admin)
+  - __ssh__ - Create a secure shell on a remote computer
+  - __scp__ - Securely copy files to a remote computer
+  - __history__ - Show the history of commands
+  - __ping__ - Check if a website is up
+  - __tracert__ - Trace the connections to a website
+  - __dig__ - Show the DNS information for a domain
+  - __man__ - Look up a command in the manual
+- Chaining commands:
+  - __|__ Take the output from the command on the left and pipe, or pass, it to the command on the right
+  - __>__ redirect output to a file. Overwrites file if it exists
+  - __>>__ redirect output to a file. Appends if the file exists
+  - ex. 
+    - ls -l | grep ' Nov ' | wc -l  - lists files in a directory, pips it into grep to search for files created in Nov, and then pip that into wc to count the number of files found with a date of Nov.
+- CTRL-R - use type ahead to find previous commands
+- CTRL-C - Kill the currently running command
