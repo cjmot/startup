@@ -93,3 +93,17 @@
     - ls -l | grep ' Nov ' | wc -l  - lists files in a directory, pips it into grep to search for files created in Nov, and then pip that into wc to count the number of files found with a date of Nov.
 - CTRL-R - use type ahead to find previous commands
 - CTRL-C - Kill the currently running command
+
+**Important CSS Info**
+- Look at cs260 github for details
+- https://codepen.io/ hub for cool css styles and animation
+- Importing fonts:
+  - @font-face {
+    - font-family: 'Quicksand';
+    - src: url("")
+  - }
+  - p {
+    - font-family: Quicksand;
+  - }
+- If you don't want to host font files:
+  - @import url('https://fonts.googleapis.com/css2?family=Rubik Microbe&display=swap');
