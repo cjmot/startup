@@ -15,11 +15,11 @@ Buying things online is at an all-time high. In this world of people selling wha
 
 ### Technology Representation
 - **Authentication**
-  - The first screen will be a page to either log in or create an account.
+  - Users will be required to log in to be able to favorite items and add items to the cart.
 - **Database Data**
   - Products and product information will be stored in the database.
 - **WebSocket Data**
-  - Reviews, chats, 'wants', and product prices will be updated in realtime
+  - Prices will change in real time, and users can opt in to receive email notifications when the prices of favorited items change.
 
 ### Design 
 
