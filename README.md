@@ -8,6 +8,7 @@
 - favicon.ico image added to all pages
 - contact us button placed in footer of all pages, routes to contact.html
 - changed login page to exclude other nav tabs, only route to it now is from create account and profile pages.
+- added kingsland logo to all pages
 
 ### Kingsland
 ### Description
