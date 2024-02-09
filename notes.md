@@ -107,3 +107,7 @@
   - }
 - If you don't want to host font files:
   - @import url('https://fonts.googleapis.com/css2?family=Rubik Microbe&display=swap');
+
+**CSS**
+- <meta name="viewport" content="width=device-width,initial-scale=1"/> located in head element, tells browser not to scale page
+- float allows inline elements to wrap around it
