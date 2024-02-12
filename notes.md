@@ -111,3 +111,7 @@
 **CSS**
 - <meta name="viewport" content="width=device-width,initial-scale=1"/> located in head element, tells browser not to scale page
 - float allows inline elements to wrap around it
+- Different frameworks allowed, most popular bootstrap and tailwind gaining popularity
+
+***UPDATES***
+2/12/24 simon css deployed
