@@ -12,7 +12,7 @@
 <body class="flex flex-col m-0 h-full font-sans text-gray-700">
 <header class="flex-none h-fit max-w-full flex flex-col justify-center items-center m-4">
     <img src="images/kingslandlogo_wordmark-blue.png" alt="images/favicon.ico" style="width: 200px">
-    <nav class="self-end flex-none flex flex-row space-x-4 text-xl">
+    <nav class="mr-6 self-end flex-none flex flex-row space-x-6 text-xl">
         <form action="shop.html">
             <button type="submit"><span class="material-symbols-outlined">shopping_cart</span></button>
         </form>
@@ -26,69 +26,68 @@
 
 </header>
 <hr />
-<main class="flex-auto h-screen flex flex-col">
-    <div class="text-4xl self-center pt-5">Database Data/Websocket Data</div>
-    <p class="text-xl self-center">Product prices/reviews updated in realtime</p>
-    <section class="h-full w-screen min-w-fit max-w-4 flex flex-row">
-        <div id="product tabs" class="flex-none w-56 pl-10 pt-20 flex flex-col">
-            <div class="my-5">BY COLLECTION</div>
+<main class="flex-auto overflow-y-scroll flex flex-col">
+    <div class="text-5xl self-center pt-5 font-medium font-serif ml-56">Kingsland Store</div>
+    <p class="text-xl self-center"></p>
+    <section class="flex-none h-full w-screen min-w-fit max-w-4 flex flex-row">
+        <div id="product-tabs" class="flex-none w-56 pl-10 pt-20 flex flex-col">
+            <div class="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY COLLECTION</div>
             <hr/>
-            <div class="my-5">BY BRAND</div>
+            <div class="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY BRAND</div>
             <hr/>
-            <div class="my-5">BY STYLE</div>
+            <div class="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY STYLE</div>
             <hr/>
         </div>
-        <div id="products" class="mt-4 flex-1 flex flex-row flex-wrap justify-center">
+        <div id="products" class="flex-1 mt-4 flex-1 flex flex-row flex-wrap justify-center">
             <div id="product" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name" class="text-xl">Product Name</div>
                 <div id="product-price" class="">$$$</div>
-                <button id="add-to-cart-button" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product2" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img2" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-nam2" class="text-xl">Product Name</div>
                 <div id="product-price2" class="">$$$</div>
-                <button id="add-to-cart-button2" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button2" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product3" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img3" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name3" class="text-xl">Product Name</div>
                 <div id="product-price3" class="">$$$</div>
-                <button id="add-to-cart-button3" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button3" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product4" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img4" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name4" class="text-xl">Product Name</div>
                 <div id="product-price4" class="">$$$</div>
-                <button id="add-to-cart-button4" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button4" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product5" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img5" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name5" class="text-xl">Product Name</div>
                 <div id="product-price5" class="">$$$</div>
-                <button id="add-to-cart-button5" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button5" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product6" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img6" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name6" class="text-xl">Product Name</div>
                 <div id="product-price6" class="">$$$</div>
-                <button id="add-to-cart-button6" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button6" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
             <div id="product7" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">
                 <img id="product-img7" class="h-1/2 min-w-32 place-self-center border-2" src="" alt="product-image">
                 <div id="product-name7" class="text-xl">Product Name</div>
                 <div id="product-price7" class="">$$$</div>
-                <button id="add-to-cart-button7" type="button" class="border-2 bg-blue-400 px-5 py-3 border-black text-sm hover:bg-blue-500">ADD TO CART</button>
+                <button id="add-to-cart-button7" type="button" class="w-full h-1/5 border-2 bg-blue-400 px-4 py-2 border-black text-sm hover:bg-blue-500 hover:font-medium hover:transition">ADD TO CART</button>
             </div>
         </div>
     </section>
 </main>
-
+<hr />
 <footer class="h-16 flex-none flex flex-row justify-center space-x-4 items-center">
-    <hr />
-    <a class="hover:underline hover: underline-offset-4 font-medium" href="about.html">About</a>
-    <a class="hover:underline hover: underline-offset-4 font-medium" href="https://github.com/cjmot/startup">GitHub</a>
+    <a class="hover:underline hover:underline-offset-4 font-medium" href="about.html">About</a>
+    <a class="hover:underline hover:underline-offset-4 font-medium" href="https://github.com/cjmot/startup">GitHub</a>
     <form action="contact.html">
         <button class="hover:underline hover:underline-offset-4 font-medium" type="submit">Contact Us</button>
     </form>
