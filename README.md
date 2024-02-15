@@ -9,6 +9,15 @@
 - contact us button placed in footer of all pages, routes to contact.html
 - changed login page to exclude other nav tabs, only route to it now is from create account and profile pages.
 - added kingsland logo to all pages
+### First CSS deliverable
+- nav logos created and spaced on the right of the header of all pages
+- headers and footers unified and styled across all pages
+- shop made to include filter tabs on the left, and products on the right.
+- Cart includes products in a list on the left, and a subtotal and checkout button on the right that takes you to checkout page
+- checkout page includes products on the far right, and billing and shipping info on the left, with a place order button underneath the info
+- login and create account pages are almost exactly the same, with information in the middle of the page. login button takes you to shop page.
+- About page styled to include header and information aligned in the center of the page.
+- Profile includes shipping and billing info centered on the page with an edit info button underneath
 
 ### Kingsland
 ### Description
