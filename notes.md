@@ -113,6 +113,191 @@
 - float allows inline elements to wrap around it
 - Different frameworks allowed, most popular bootstrap and tailwind gaining popularity
 
-***UPDATES***
-2/12/24 simon css deployed
-2/14/24 startup-html css deployed
+**JavaScript**
+- I already know JS basics, nothing new here
+
+**JSON**
+- JavaScript Object Notation
+- Provides a simple and effective way to share and store data.
+- Most often Json docs contain objects. objects contain 0 or more key value pairs. Key always string, and value must be one of teh valid JSON data types. key value paris delimited with commas. 
+```JSON
+{
+  "class": {
+  "title": "web programming",
+  "description": "Amazing"
+  },
+  "enrollment": ["Marco", "Jana", "فَاطِمَة"],
+  "start": "2025-02-01",
+  "end": null
+  }
+```
+- can convert JSON to, and from JS using JSON.parse and JSON.stringify functions
+```js
+  const obj = { a: 2, b: 'crockford', c: undefined };
+  const json = JSON.stringify(obj);
+  const objFromJson = JSON.parse(json);
+
+  console.log(obj, json, objFromJson);
+
+  // OUTPUT:
+  // {a: 2, b: 'crockford', c: undefined}
+  // {"a":2, "b":"crockford"}
+  // {a: 2, b: 'crockford'}
+```
+- JSON cannot represent undefined object, and gets dropped when converting from JS to JSON
+
+***JS object and classes***
+- objects represent collection of name value pairs referred to as properties. 
+  - property names must be of type String or Symbol, but value can be of any type. 
+  - Objects also can have functionality like constructors, this pointer, static properties and functions, and inheritance.
+  - Created with new operator. causes object's constructor to be called. once declared you can add properties to object by simply referencing property name in an assignment. Any type of variable can be assigned to a property. includes sub-object, array, or function. 
+  - properties can be referenced wither with dot (obj.prop) or bracket notation (obj.['prop']).
+```js
+const obj = new Object({ a: 3 });
+obj['b'] = 'fish';
+obj.c = [1, 2, 3];
+obj.hello = function () {
+  console.log('hello');
+};
+
+console.log(obj);
+// OUTPUT: {a: 3, b: 'fish', c: [1,2,3], hello: func}
+```
+  - object can refer to the standart JS objects (eg. Promise, Map, Object, Function, Date, ...), or can refer specifically to JS Object object (ie. new Object() ) or can refer to any JS object you create (e.g. {a:'a', b:2}) overload usage can be confusing
+**Object-literals**
+- can also declare a variable of object type with the object literal syntax. allows you to provide initial composition of the object.
+```js
+const obj = {
+    a: 3,
+    b: 'fish',
+};
+```
+**Object functions**
+- several interesting static functions associated with it:
+  - entries: returns an array of key value pairs
+  - keys: returns array of keys
+  - values: returns array of values
+```js
+const obj = {
+  a: 3,
+  b: 'fish',
+};
+
+console.log(Object.entries(obj));
+// OUTPUT: [['a', 3], ['b', 'fish']]
+console.log(Object.keys(obj));
+// OUTPUT: ['a', 'b']
+console.log(Object.values(obj));
+// OUTPUT: [3, 'fish']
+```
+**Constructor**
+- any function that returns an object is considered a constructor and can be invoked with the new operator
+
+**Classes**
+- classes define objects. Using a class clarifies the intent to create a reusable component rather than a one-of object. Class declarations look similar to declaring an object, but classes have an explicit constructor and assumed function declarations.
+- You can make properties and functions of classes private by prefixing them with a #.
+```js
+class Person {
+    #name;
+    constructor(name){
+        this.#name = name;
+    }
+}
+const p = new Person('Eich');
+p.#name = 'Lie';
+// OUTPUT: Uncaught SyntaxError: Private field '#name' must be declared in an enclosing class
+```
+
+***Inheritance***
+- classes can be extended by using the extends keyword to define inheritance. Parameters that need to be passed to the parent class are delivered using the super function. Any functions defined on the child that have the same name as the parent override the parent's implementation. A parent's function can be explicitly accessed using the super keyword.
+```js
+class Employee extends Person {
+  constructor(name, position) {
+    super(name);
+    this.position = position;
+  }
+
+  print() {
+    return super.print() + '. I am a ' + this.position;
+  }
+}
+
+const e = new Employee('Eich', 'programmer');
+console.log(e.print());
+// OUTPUT: My name is Eich. I am a programmer
+```
+
+***REGEX***
+- regex support built right into JS. 
+- you can create regex using the class constructor or a regex literal
+```js
+const objRegex = new RegExp('ab*', 'i');
+const literalRegex = /ab*/i;
+```
+- string class has several functions that accept regex. 
+  - match, replace, search, and split
+```js
+const petRegex = /(dog)|(cat)|(bird)/gim;
+const text = 'Both cats and dogs are pets, but not rocks.';
+
+text.match(petRegex);
+// RETURNS: ['cat', 'dog']
+
+text.replace(petRegex, 'animal');
+// RETURNS: Both animals and animals are pets, but not rocks.
+
+petRegex.test(text);
+// RETURNS: true
+```
+
+***Rest***
+- parameter that contains the rest of the parameters
+```js
+function hasNumber(test, ...numbers) {
+    return numbers.some((i) => i === test);
+}
+hasNumber(2, 1, 2, 3);
+// RETURNS: true
+```
+***Spread***
+- opposite of rest. Takes an object that is iterable and expands it into a function's parameters.
+```js
+function person(firstName, lastName){
+    return { first: firstName, last: lastName};
+}
+
+const p = person(...['Ryan', 'Dahl']);
+console.log(p);
+// OUTPUT: {first: 'Ryan', last: 'Dahl'}
+```
+***Exceptions***
+- JS supports handling using try catch and throw syntax. exception can be triggered whenever your code generates an exception using the throw keyword, or whenever an exception is generated by the GS runtime, for example, when an undefined variable is used.
+```js
+function connectDatabase() {
+  throw new Error('connection error');
+}
+
+try {
+  connectDatabase();
+  console.log('never executed');
+} catch (err) {
+  console.log(err);
+} finally {
+  console.log('always executed');
+}
+
+// OUTPUT: Error: connection error
+//         always executed
+```
+- Throwing exceptions should only happen when something truly exceptional occurs. For ex. file not found exception when file is required for code to run, such as a required config file. code will be easier to debug, and logs more meaningful if you restrict exceptions to truly exceptional situations
+
+***Fallbacks***
+- commonly implemented using exception handling.
+- put the normal feature path in a try block and provide a fallback implementation in the catch block. 
+  - ex normally you would get the high scores for a game by making a network request, but if the network is not available then a locally cached version of the last available scores is used.
+- by providing fallback, you can always return something, even if the desired feature is temporarily unavailable.
+
+***Destructuring***
+- not destructing
+- process of pulling individual items out of an existing one, or removing structure. You can do this with either arrays or objects. helpful when you only care about a few items in the original structure.
+- 
