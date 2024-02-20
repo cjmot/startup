@@ -300,4 +300,92 @@ try {
 ***Destructuring***
 - not destructing
 - process of pulling individual items out of an existing one, or removing structure. You can do this with either arrays or objects. helpful when you only care about a few items in the original structure.
-- 
+- examples:
+```js
+const [b, c, ...others] = a;
+
+console.log(b, c, others);
+// OUTPUT: 1, 2, [4,5]
+```
+
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a, c } = o;
+
+console.log(a, c);
+// OUTPUT 1, ['fish', 'cats']
+```
+
+```js
+const o = { a: 1, b: 'animals', c: ['fish', 'cats'] };
+
+const { a: count, b: type } = o;
+
+console.log(count, type);
+// OUTPUT 1, animals
+```
+
+```js
+const { a, b = 22 } = {};
+const [c = 44] = [];
+
+console.log(a, b, c);
+// OUTPUT: undefined, 22, 44
+```
+
+```js
+let a = 22;
+
+[a] = [1, 2, 3];
+
+console.log(a);
+// OUTPUT: 1
+```
+
+***Scope***
+- Global - Visible to all code
+- Module - Visible to all code running in a module
+- Function - Visible within a function
+- Block - Visible within a block of code delimited by curly braces
+
+- **Var**
+  - ignores block scope
+  - always logically hoisted to the top of the function
+  - Use ```const``` and ```let``` unless you fully understand why you are using var
+
+- **This**
+  - value of ```this``` depends on the context in which it is referenced.
+  - 3 contexts:
+    - **Global** - when outside a function or object it refers to the ```globalThis``` object, which represents the context for runtime environment
+    - **Function** - when inside a function refers to the object that owns the function. either an object you defined or ```globalThis``` if function is outside an object
+    - **Object** - when inside an object refers to the object
+- **Closure**
+  - defined as a function and its surrounding state
+  - whatever variables are accessible when a function is created are available inside that function. Holds true even if you pass the function outside of the scope of its original creation.
+  - ex of function created as part of an object. means that function has access to the object's this pointer
+```js
+globalThis.x = 'global';
+
+const obj = {
+    x: 'object',
+    f: function () {
+        console.log(this.x);
+    },
+};
+
+obj.f();
+// OUTPUT: object
+```
+  - arrow functions work different
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  f: () => console.log(this.x),
+};
+
+obj.f();
+// OUTPUT: global
+```
