@@ -389,3 +389,61 @@ const obj = {
 obj.f();
 // OUTPUT: global
 ```
+  - but if we make the function return an arrow function, then this pointer will the the object's this pointer since that was the active context at the time the arrow function was created.
+```js
+globalThis.x = 'global';
+
+const obj = {
+  x: 'object',
+  make: function () {
+    return () => console.log(this.x);
+  },
+};
+
+const f = obj.make();
+f();
+// OUTPUT: object
+```
+
+***JavaScript Modules***
+- allow for the partitioning and sharing of code. 
+- node.js, a server side JS execution app introduced the concept to support importing of packages of JS from third party providers
+- node.js modules called CommonJS modules, JS modules called ES modules
+- modules create file-based scope for the code they represent, therefore you must explicitly export the objects from one file and then import them into another file.
+```js
+export function alertDisplay(msg){
+    alert(msg);
+}
+```
+```js
+import { alertDisplay } from './alert.js';
+
+alertDisplay('called from main.js');
+```
+***ES modules in browser***
+- more complicated.
+- modules can only be called from other modules
+- you can import modules from html
+```html
+<script type="module">
+  import { alertDisplay } from './alert.js';
+  alertDisplay('module loaded');
+</script>
+```
+- if you want to put it in global scope, add it into the window object
+```html
+<html>
+  <body>
+    <script type="module">
+      import { alertDisplay } from './alert.js';
+      window.btnClick = alertDisplay;
+
+      document.body.addEventListener('keypress', function (event) {
+        alertDisplay('Key pressed');
+      });
+    </script>
+    <button onclick="btnClick('button clicked')">Press me</button>
+  </body>
+</html>
+```
+***Modules with web frameworks***
