@@ -54,10 +54,10 @@
   - provides access to the file system and allows for the execution of command line applications.
   - many to choose from, all OS come with a default. but for the best one installation needed.
 - __Console Application__
-  - must by POSIX compliant - supports standard set of console commands. 
+  - must be POSIX compliant - supports standard set of console commands. 
     - mac and linux support POSIX
     - Windows needs git bash
-    - dont use git command, cmd, or powershell.
+    - don't use git command, cmd, or powershell.
 - __Simple Commands__
   - __echo__ - Output the parameters of the command
   - __cd__ - Change directory
@@ -95,7 +95,7 @@
 - CTRL-C - Kill the currently running command
 
 **Important CSS Info**
-- Look at cs260 github for details
+- Look at cs260 GitHub for details
 - https://codepen.io/ hub for cool css styles and animation
 - Importing fonts:
   - @font-face {
@@ -151,7 +151,7 @@
   - property names must be of type String or Symbol, but value can be of any type. 
   - Objects also can have functionality like constructors, this pointer, static properties and functions, and inheritance.
   - Created with new operator. causes object's constructor to be called. once declared you can add properties to object by simply referencing property name in an assignment. Any type of variable can be assigned to a property. includes sub-object, array, or function. 
-  - properties can be referenced wither with dot (obj.prop) or bracket notation (obj.['prop']).
+  - properties can be referenced either with dot (obj.prop) or bracket notation (obj.['prop']).
 ```js
 const obj = new Object({ a: 3 });
 obj['b'] = 'fish';
@@ -163,7 +163,7 @@ obj.hello = function () {
 console.log(obj);
 // OUTPUT: {a: 3, b: 'fish', c: [1,2,3], hello: func}
 ```
-  - object can refer to the standart JS objects (eg. Promise, Map, Object, Function, Date, ...), or can refer specifically to JS Object object (ie. new Object() ) or can refer to any JS object you create (e.g. {a:'a', b:2}) overload usage can be confusing
+  - object can refer to the standard JS objects (eg. Promise, Map, Object, Function, Date, ...), or can refer specifically to JS Object (ie. new Object() ) or can refer to any JS object you create (e.g. {a:'a', b:2}) overload usage can be confusing
 **Object-literals**
 - can also declare a variable of object type with the object literal syntax. allows you to provide initial composition of the object.
 ```js
@@ -362,7 +362,7 @@ console.log(a);
     - **Object** - when inside an object refers to the object
 - **Closure**
   - defined as a function and its surrounding state
-  - whatever variables are accessible when a function is created are available inside that function. Holds true even if you pass the function outside of the scope of its original creation.
+  - whatever variables are accessible when a function is created are available inside that function. Holds true even if you pass the function outside the scope of its original creation.
   - ex of function created as part of an object. means that function has access to the object's this pointer
 ```js
 globalThis.x = 'global';
@@ -389,7 +389,7 @@ const obj = {
 obj.f();
 // OUTPUT: global
 ```
-  - but if we make the function return an arrow function, then this pointer will the the object's this pointer since that was the active context at the time the arrow function was created.
+  - but if we make the function return an arrow function, then this pointer will the object's this pointer since that was the active context at the time the arrow function was created.
 ```js
 globalThis.x = 'global';
 
@@ -447,3 +447,34 @@ alertDisplay('called from main.js');
 </html>
 ```
 ***Modules with web frameworks***
+- usually no need to worry about differentiating between global and ES module scope.
+
+***Document Object Model***
+- object representation of the HTML elements that the browser uses to render the display.
+- browser also exposes the DOM to external code so that you can write programs that dynamically manipulate the HTML.
+- browser that provides access to the DOM through a global variable name ```document``` that points to the root element of the DOM.
+  - If you open the browser's debugger console window and type the variable name ```document``` you will see the DOM for the document the browser is currently rendering
+
+***Accessing the DOM***
+- Every element in an HTML document implements the DOM element interface, which is derived from the DOM Node interface.
+- **DOM Element Interface** provides the means for iterating child elements, accessing the parent element, and manipulating the element's attributes. For your JS code, you can start with the document variable and walk through the every element in the tree.
+```js
+function displayElement(el) {
+    console.log(el.tagName);
+    for (const child of el.children) {
+        displayElement(child);
+    }
+}
+
+displayElement(document);
+```
+- provide a CSS selector to the ```querySelectorAll``` function in order to select elements from the document. The ```textContent``` property contains all of the element's text. 
+- you can even access a textual representation of an element's HTML content with the ```innerHTML``` property.
+```js
+const listElements = document.querySelectorAll('p');
+for (const el of listElements) {
+    console.log(el.textContent);
+}
+```
+***Modifying the DOM***
+- DOM supports the ability to insert, modify, or delete the elements in the DOM. To create a new element you first create the element on the DOM document
