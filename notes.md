@@ -477,4 +477,63 @@ for (const el of listElements) {
 }
 ```
 ***Modifying the DOM***
-- DOM supports the ability to insert, modify, or delete the elements in the DOM. To create a new element you first create the element on the DOM document
+- DOM supports the ability to insert, modify, or delete the elements in the DOM. 
+- To create a new element you first create the element on the DOM document
+- then insert the new element into DOM tree by appending it to an existing element in the tree
+```js
+function insertChild(parentSelector, text) {
+    const newChild  = document.createElement('div');
+    newChild.textContent = text;
+    
+    const parentElement = document.querySelector(parentSelector);
+    parentElement.appendChild(newChild);
+}
+
+insertChild('#courses', 'new course');
+```
+- to delete elements call the removeChild function on the parent element.
+```js
+function deleteElement(elementSelector) {
+    const el = document.querySelector(elementSelector);
+    el.parentElement.removeChild(el);
+}
+
+deleteElement('#courses div');
+```
+
+***Injecting HTML***
+- DOM also allows you to inject entire blocks of HTML into an element. 
+- following code finds first div element in DOM and replaces all the HTML it contains
+```js
+const el = document.querySelector('div');
+el.innerHTML = '<div class="injected"><b>Hello</b>!</div>';
+```
+- however, directly injecting HTML as a block of text is common attack vector for hackers. 
+- if untrusted party can inject JavaScript anywhere in your application then that JS can represent itself as the current user of the application. The attacker can then make requests for sensitive data, monitor activity, and steal credentials.
+- Ex below shows how the img element can be used to launch an attack as soon as the page is loaded.
+```html
+<img src="bogus.png" onerror="console.log('All your base are belong to us')" />
+```
+- if you are injecting HTML, make sure that it cannot be manipulated by a user. Common injection paths include HTML input controls, URL parameters, and HTTP headers.
+- Either sanitize any HTML that contains variables, or simply use DOM manipulation functions instead of using ```innerHTML```
+
+***Event Listeners***
+- All DOM elements support the ability to attach a function that gets called when an event occurs on the element. (Event listeners)
+- ex:
+```js
+const submitDataEl = document.querySelector('#submitData');
+submitDataEl.addEventListeneer('click', function (event) {
+    console.log(event.type);
+});
+```
+- lots of possible events you can add a listener to. includes things like mouse, keyboard, scrolling, animation, video, audio, WebSocket, and clipboard events. 
+- Commonly used events:
+  - clipboard - cut, copied, pasted
+  - focus - an element gets focus
+  - keyboard - keys are pressed
+  - mouse - click events
+  - text selection - when text is selected
+- you can add event listeners directly in HTML
+```html
+<button onclick='alert("clicked")'>click me</button>
+```
