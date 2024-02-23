@@ -537,3 +537,29 @@ submitDataEl.addEventListeneer('click', function (event) {
 ```html
 <button onclick='alert("clicked")'>click me</button>
 ```
+
+***Local Storage***
+- ```localStorage``` api provides ability to persistently store and retrieve data (ie scores, usernames, etc.) on a user's browser across user sessions and HTML page renderings.
+- your frontend JS code could store a user's name on one HTML page, and then retrieve the name later when a different HTML page is loaded.
+- same user's name will also be available in local storage the next time the same browser is used to access the same website.
+- Also used as a cache for when data cannot be obtained from the server. 
+  - ex. frontend JS could store the last high scores obtained from the service, and then display those scores in the future if the service not available.
+- four main functions:
+  - setItem(name, value) = sets a named item's value into local storage
+  - getItem(name) = gets a named item's value from local storage
+  - removeItem(name) = removes a named item from local storage
+  - clear() = clears all items in local storage.
+- objects and arrays need to be converted to a json string using JSON.stringify() on insertion, and JSON.parse() when retrieved.
+- in devtools, Application, then Storage > local storage and then your domain name will let you add, view, update, and delete any storage values
+
+***Promise***
+- long running or blocking tasks should be executed with the use of JS ```Promise```. 
+- allows main rendering thread to continue while some action is executed in background.
+- make promise by calling Promise object constructor and passing it an executor function that runs the asynchronous operation.
+  - asynchronously means that promise constructor may return before the promise executor function runs.
+  - state of promise execution is always in one of three states.
+    - pending - running asynchronously
+    - fulfilled - completed successfully
+    - rejected = failed to complete
+- **Resolving and rejecting**
+  - 
