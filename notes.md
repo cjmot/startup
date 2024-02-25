@@ -562,4 +562,134 @@ submitDataEl.addEventListeneer('click', function (event) {
     - fulfilled - completed successfully
     - rejected = failed to complete
 - **Resolving and rejecting**
-  - 
+  - Promise executor function takes two functions as parameters, resolve and reject.
+  - calling resolve sets promise to fulfilled state, calling reject sets the promise to the rejected state.
+```js
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.5) {
+      resolve('success');
+    } else {
+      reject('error');
+    }
+  }, 10000);
+});
+```
+
+***Then, Catch, finally***
+- promise object has three functions: then, catch, and finally.
+  - then function called if promise is fulfilled, catch is called if the promise is rejected, and finally always called after all the processing is completed.
+```js
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.1) {
+      resolve(Math.random() > 0.5 ? 'heads' : 'tails');
+    } else {
+      reject('fell off table');
+    }
+  }, 10000);
+});
+```
+```js
+coinToss
+  .then((result) => console.log(`Coin toss result: ${result}`))
+  .catch((err) => console.log(`Error: ${err}`))
+  .finally(() => console.log('Toss completed'));
+
+// OUTPUT:
+//    Coin toss result: tails
+//    Toss completed
+```
+
+***JS Async/await***
+- await keyword wraps the execution of a promise and removed the need to chain functions. 
+- await expression will block until the promise state moves to 'fulfilled'. or throws exception if the state moves to rejected.
+- two ways to do it: then/catch chain version (see above), and async, try/catch version
+```js
+try {
+  const result = await coinToss();
+  console.log(`Toss result ${result}`);
+} catch (err) {
+  console.error(`Error: ${err}`);
+} finally {
+  console.log(`Toss completed`);
+}
+```
+- **ASYNC**
+  - a restriction with await is you cannot call await unless it is called at the top level of the JS, or is in a function that is defined with the async keyword.
+  - applying async keyword transforms the function so that it returns a promise that will resolve to the value that was previously returned by the function. 
+    - turns any function into asynchronous function, so that it can in turn make asynchronous requests
+```js
+async function cow() {
+    return 'moo';
+}
+console.log(cow());
+// OUTPUT: Promise {<fulfilled>: 'moo'}
+```
+  - we can change it to explicitly create a promise instead of the auto generated promise that the await keyword generates.
+```js
+async function cow() {
+  return new Promise((resolve) => {
+    resolve('moo');
+  });
+}
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+```
+
+- **AWAIT**
+  - async declares that a function returns a promise. 
+  - await wraps a call to the async function, blocks execution until the promise has resolved, and then returns the result of the promise.
+```js
+console.log(cow());
+// OUTPUT: Promise {<pending>}
+
+console.log(await cow());
+// OUTPUT: moo
+```
+- **TOGETHER**
+  - by combining async to define functions that return promises, with await, to wait on the promise, you can create code that is aysynchronous, but still maintains the flow of the code without explicitly  using callbacks.
+  - promise implementation:
+```js
+const httpPromise = fetch('https://simon.cs260.click/api/user/me');
+const jsonPromise = httpPromise.then((r) => r.json());
+jsonPromise.then((j) => console.log(j));
+console.log('done');
+
+// OUTPUT: done
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+```
+  - with async/await, you can clarify the code intent by hiding the promise syntax, and also make the execution block until the promise is resolved.
+```js
+const httpResponse = await fetch('https://simon.cs260.click/api/user/me');
+const jsonResponse = await httpResponse.json();
+console.log(jsonResponse);
+console.log('done');
+
+// OUTPUT: {email: 'bud@mail.com', authenticated: true}
+// OUTPUT: done
+```
+
+
+***Debugging JS***
+- **console debugging**
+  - insert console.log functions that output the state of the code as it executes. 
+```js
+var varCount = 20;
+let letCount = 20;
+
+console.log('Initial - var: %d, let: %d', varCount, letCount);
+
+for (var varCount = 1; varCount < 2; varCount++) {
+  for (let letCount = 1; letCount < 2; letCount++) {
+    console.log('Loop - var: %d, let: %d', varCount, letCount);
+  }
+}
+
+const h1El = document.querySelector('h1');
+h1El.textContent = `Result - var:${varCount}, let:${letCount}`;
+console.log('Final - var: %d, let: %d', varCount, letCount);
+```
+  - you can also type in the names of variables in your console window, and execute js in the console.
+- **Browser debugging**
+  - source tab can add breakpoints, which will execute when you reload the page
