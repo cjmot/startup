@@ -1,6 +1,4 @@
 
-
-
 function create_account() {
     localStorage.clear();
     const createName = document.getElementById("createName").value;

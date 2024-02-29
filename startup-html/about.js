@@ -3,7 +3,7 @@ function onStart() {
 
     if (localStorage.getItem("userName")) {
         loggedIn = true;
-        document.getElementById("constactUser").innerHTML = localStorage.getItem("userName");
+        document.getElementById("aboutUser").innerHTML = localStorage.getItem("userName");
     }
 }
 
