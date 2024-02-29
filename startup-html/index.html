@@ -6,6 +6,7 @@
     <title>Kingsland</title>
     <link rel="icon" href="images/favicon.ico" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="login.js"></script>
 </head>
 <body class="flex flex-col m-0 h-full font-sans text-gray-700">
 <header class="flex-none h-fit flex flex-col justify-center items-center m-4">
@@ -19,14 +20,12 @@
         <hr />
         <form method="get" action="shop.html" class="mt-5 flex flex-col space-y-1">
             <label for="name"></label>
-            <input class="border-2 text-center w-full h-10 font-medium focus:placeholder-transparent" type="text" id="name" placeholder="Name" />
-            <label for="Email"></label>
-            <input class="border-2 text-center w-full h-10 font-medium focus:placeholder-transparent" type="text" id="Email" placeholder="Email" />
-            <label for="Password"></label>
-            <input class="border-2 text-center w-full h-10 font-medium focus:placeholder-transparent" type="password" id="Password" placeholder="Password" />
+            <input class="border-2 text-center w-full h-10 font-medium focus:placeholder-transparent" type="text" id="name" placeholder="Username" />
+            <label for="password"></label>
+            <input class="border-2 text-center w-full h-10 font-medium focus:placeholder-transparent" type="password" id="password" placeholder="Password" />
             <div>
-                <form action="shop.html">
-                    <button class="w-full text-center h-12 bg-blue-400 font-medium font-sans" type="submit">LOGIN</button>
+                <form>
+                    <button class="w-full text-center h-12 bg-blue-400 font-medium font-sans" type="button" onclick="login()">LOGIN</button>
                 </form>
             </div>
         </form>
