@@ -30,56 +30,29 @@
 
 </header>
 <hr />
-<main class="flex-auto h-screen flex flex-col justify-center items-center">
-    <div class="text-4xl font-medium">Profile</div>
-    <section id="info" class="flex-auto flex flex-col m-5 space-y-5">
-    <div id="billing" >
-        <div class="text-3xl m-3">Billing Info</div>
-        <div id="billing-info" class="flex flex-row flex-wrap">
-            <div class="flex flex-col m-1 first:ml-0">
-                <div class="border-2 p-2 h-10 font-medium focus:placeholder-transparent">Name</div>
+<main class="flex-auto h-screen flex flex-col items-center">
+    <section id="info" class="w-92 flex-1 flex flex-col items-center justify-center m-5 space-y-5">
+        <div class="w-92 flex flex-col space-y-10">
+            <div class="text-4xl font-medium border-b-2">Profile</div>
+            <div class="flex flex-row w-full items-center space-x-2">
+                <label for="infoUserName" class="font-semibold">Name: </label>
+                <input id="infoUserName" class=" py-1 px-2 bg-white" disabled/>
             </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">Card Number</div>
+            <div class="flex flex-row items-center space-x-2">
+                <label for="infoEmail" class="font-semibold">Email: </label>
+                <input id="infoEmail" class=" py-1 px-2 bg-white" disabled/>
             </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">Expiration Date</div>
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">CVV</div>
+            <div class="flex flex-row items-center space-x-2">
+                <label for="infoPassword" class="font-semibold">Password: </label>
+                <input id="infoPassword" class=" py-1 px-2 bg-white" disabled/>
             </div>
         </div>
-    </div>
-    <div id="shipping">
-        <div class="text-3xl m-3">Shipping Info</div>
-        <div id="shipping-info" class="flex flex-row flex-wrap">
-            <div class="flex flex-col m-1 first: ml-0">
-                <div class="border-2 p-2 h-10 font-medium focus:placeholder-transparent">Name</div>
+        <div class="flex flex-row items-center space-x-2">
+            <button id="editButton" class="w-44 border-black text-center py-3 px-5 bg-blue-400 font-medium hover:font-bold hover:bg-blue-500 transition" type="button" onclick="editAccount()">EDIT INFO</button>
+            <button id="deleteButton" class=" self-end w-44 border-black text-center py-3 px-5 bg-blue-400 font-medium hover:font-bold hover:bg-blue-500 transition" type="submit" onclick="deleteAccount()">DELETE ACCOUNT</button>
+        </div>
 
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">Address Line 1</div>
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">Apt/Unit #</div>
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">City</div>
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">State</div>
-            </div>
-            <div class="flex flex-col m-1">
-                <div class="border-2 p-2 h-10 font-medium">Zip</div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <form action="">
-            <button class="w-52 border-black text-center py-3 px-7 bg-blue-400 font-medium hover:font-bold hover:bg-blue-500 transition" type="submit">EDIT INFO</button>
-        </form>
-    </div>
-</section>
+    </section>
 </main>
 <hr />
 <footer class="h-16 flex-none flex flex-row justify-center space-x-4 items-center">
