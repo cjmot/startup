@@ -18,6 +18,15 @@
 - login and create account pages are almost exactly the same, with information in the middle of the page. login button takes you to shop page.
 - About page styled to include header and information aligned in the center of the page.
 - Profile includes shipping and billing info centered on the page with an edit info button underneath
+### First JavaScript deliverable
+- added js files for all pages
+- create account and login functionality created, name, password, and email stored in local storage from create account page
+- login checks if name and password matches what is in local storage
+- header for all pages updated to display username next to profile button
+- changed profile.html layout and added functionality to edit and delete buttons. edits and deletes only from localStorage.
+- changed buttons on login and create account pages to submit on enter without issues.
+- shop page updated to show products based on what **database data** might look like (an array of Product objects with differing values)
+- added websocket placeholder functionality (if price data changes on a product, page notifies them)
 
 ### Kingsland
 ### Description
