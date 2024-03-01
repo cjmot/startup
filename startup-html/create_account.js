@@ -1,4 +1,3 @@
-
 function create_account() {
     localStorage.clear();
     const createName = document.getElementById("createName").value;
@@ -8,10 +7,11 @@ function create_account() {
 
     if (confPassword !== createPassword) {
         alert("Passwords must match");
-    } else {
+    }
+    else {
+        alert("Account created")
         localStorage.setItem("userName", createName);
         localStorage.setItem("email", createEmail);
         localStorage.setItem("password", createPassword);
-        window.location.href = "index.html";
     }
 }
