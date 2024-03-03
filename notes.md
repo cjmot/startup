@@ -693,3 +693,116 @@ console.log('Final - var: %d, let: %d', varCount, letCount);
   - you can also type in the names of variables in your console window, and execute js in the console.
 - **Browser debugging**
   - source tab can add breakpoints, which will execute when you reload the page
+
+***The internet***
+- globally connects independent networks and computing devices
+- when devices want to talk to one another it must have an IP address (ex 128.187.16.184 is BYU's)
+- symbolic (domain) names usually preferred.
+- traceroute console utility lets you see hops in a connection
+``` 
+➜  traceroute byu.edu
+
+traceroute to byu.edu (128.187.16.184), 64 hops max, 52 byte packets
+1  192.168.1.1 (192.168.1.1)  10.942 ms  4.055 ms  4.694 ms
+2  * * *
+3  * * *
+4  192-119-18-212.mci.googlefiber.net (192.119.18.212)  5.369 ms  5.576 ms  6.456 ms
+5  216.21.171.197 (216.21.171.197)  6.283 ms  6.767 ms  5.532 ms
+6  * * *
+7  * * *
+8  * * *
+9  byu.com (128.187.16.184)  7.544 ms !X *  40.231 ms !X
+```
+- every route is dynamically calculated.
+- TCP/IP model is a layered architecture that covers everything from the physical wires to the data that a web application sends
+  - top layer is application layer, represents user functionality, such as web, mail, files, remote shell, and chat.
+  - next is transport layer which breaks application layer's information into small chunks and sends the data. 
+  - actual connection made using internet layer
+  - last is link layer which deals with the physical connections and hardware.
+  - | Layer	      | Example	         | Purpose                               |
+    |-------------|------------------|---------------------------------------|
+    | Application | HTTPS	           | Functionality like web browsing       |
+    | Transport	  | TCP	             | Moving connection information packets |
+    | Internet	   | IP	              | Establishing connections              |
+    | Link	       | Fiber, hardware	 | Physical connections                  |
+
+***Web Servers***
+- computing device that is hosting a web service that knows how to accept incoming internet connections and speak the HTTP application protocol.
+- today most modern programming languages include libraries that provide the ability to make connections and serve up HTTP. 
+- ex. ```go```
+```js
+package main
+
+import (
+        "net/http"
+        )
+
+func main() {
+  // Serve up files found in the public_html directory
+  fs := http.FileServer(http.Dir("./public_html"))
+  http.Handle("/", fs)
+
+  // Listen for HTTP requests
+  http.ListenAndServe(":3000", nil)
+}
+```
+- being able to easily create web services makes it easy to completely drop the monolithic web server concept and just build web services right into your web application.
+- we can add function that responds with the current time, when the /api/time resource is requested.
+```js
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"time"
+)
+
+func getTime(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, time.Now().String())
+}
+
+func main() {
+	// Serve up files found in the public_html directory
+	fs := http.FileServer(http.Dir("./public_html"))
+	http.Handle("/", fs)
+
+	// Dynamically provide data
+	http.HandleFunc("/api/time", getTime)
+
+	// Listen for HTTP requests
+	fmt.Println(http.ListenAndServe(":3000", nil))
+}
+```
+- gateways (simple web service) listen on the common HTTPS port 443, looks at the request and maps it to the other services running on different ports
+- we use caddy
+- microservices are web services that provide a single functional purpose
+  - by partitioning functionality into small logical chunks, you can develop and manage them independently of other functionality in a larger system.
+  - they can also handle large fluctuations in user demand by simply running more and more stateless copies of the microservice from multiple virtual servers hosted in a dynamic cloud environment.
+  - ex one microservice for generating your genealogical family tree might be able to handle 1000 users concurrently, so in order to support 1 million users, you just deploy 1000 instances of the service running on scalable virtual hardware
+- serverless
+  - evolved from microservices, is where the server is conceptually removed from the architecture, and you just write a function that speaks HTTP. function loaded through a gateway that maps a web request to the function
+  - gateway automatically scales the hardware needed to host the serverless function based on demand. This reduces what the web application developer needs to think about down to a single independent function.
+
+***Domain names***
+- you can get the ip address for any domain using dig console utility.
+- sometimes there are multiple ip addresses with one domain name, allows for redundancy in case if address failing to resolve.
+- Top-level-domain (TLD) represents things after dot. (com, edu, click)
+- root domain would look like "byu.edu", "google.com", or "cs260.click".
+- you can find more information by using whois console utility
+- DNS (Domain name service) allows you to associate a domain name with an ip address, but you have to also lease the ip address before you can use it to uniquely identify a device on the internet
+- main records that facilitate mapping domain names to IP addresses:
+  - address (A) - straight mapping form domain name to IP address
+  - canonical name (CNAME) - maps one domain name to another domain name. acts as a domain name alias. would use to map byu.com to the same ip as byu.edu.\
+- when entering domain name into browser:
+  - browser checks if it's in the cache, and if not, contacts DNS server and gets IP address. DNS server also keeps a cache of names. 
+  - if not in that cache, will request name from an authoritative name server. if no recognition there you will get an unknown domain name error.
+  - if process resolves, browser makes the HTTP connection to associated IP address.
+- Leasing a domain name:
+  - you can pay to lease an unused domain name for a specific period of time. before it expires, you can choose to extend.
+  - varies from 3 to 200 a year.
+  - buying or subleasing from a private party can be very expensive, and you are better off buying something obscure. One reason why companies have such strange names these days.
+***Web services intro***
+- from frontend JS we can make requests to external services running anywhere in the world. 
+- This allows us to get external data that we then inject into the DOM for the user to read. To make a web service request, we supply the URL of the web service to the fetch function that is built into the browser.
+- 
