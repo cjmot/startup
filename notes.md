@@ -804,5 +804,218 @@ func main() {
   - buying or subleasing from a private party can be very expensive, and you are better off buying something obscure. One reason why companies have such strange names these days.
 ***Web services intro***
 - from frontend JS we can make requests to external services running anywhere in the world. 
-- This allows us to get external data that we then inject into the DOM for the user to read. To make a web service request, we supply the URL of the web service to the fetch function that is built into the browser.
-- 
+- This allows us to get external data that we then inject into the DOM for the user to read. 
+- To make a web service request, we supply the URL of the web service to the fetch function that is built into the browser.
+- Next step in building a full stack web app is create our own web service. 
+  - it will provide the static frontend files along with functions to handle fetch requests for things like storing data persistently, providing security, running tasks, executing application logic that you don't want your user to be able to see, and communicating with other users.
+  - web service functionality represents backend of app
+- web service functions generally called endpoints, or APIs.
+- access web service endpoints from frontend JS with fetch function.
+
+***URL***
+- uniform resource locator
+- represents location of a web resource, such as web page, font, image, video stream, database record, or JSON object, or visitation counter, or gaming session
+- looking at different  parts is a good way to understand what it represents.
+- URL syntax:
+  - <scheme>://<domain name>:<port>/<path>?<parameters>#<anchor>
+- URN or URI are part of web resources
+  - Uniform Resource Name is unique resource name that does not specify location information
+  - Uniform Resource Identifier is general resource identifier that could refer to either a url or urn.
+
+***Ports***
+- Connecting to a device on the internet you need both IP address and a numbered port.
+- #s allow single device to support multiple protocols as well as different services.
+- ports may be exposed externally, or only used internally.
+- internet governing body, IANA, defines standard usage for port numbers:
+  - 0-1023 standard protocols. web service should avoid these unless it is providing protocol represented by the standard.
+  - from 1024-49151 ports that have ben assigned to requesting entities, but common to find these used by services running internally
+  - from 49152 to 65535 considered dynamic and used to create dynamic connections to device.
+- common port numbers:
+  - | Port | Protocol                                                                                           |
+    |------|----------------------------------------------------------------------------------------------------|
+    | 20   | File Transfer Protocol (FTP) for data transfer                                                     |
+    | 22   | Secure Shell (SSH) for connecting to remote devices                                                |
+    | 25   | Simple Mail Transfer Protocol (SMTP) for sending email                                             |
+    | 53   | Domain Name System (DNS) for looking up IP addresses                                               |
+    | 80   | Hypertext Transfer Protocol (HTTP) for web requests                                                |
+    | 110  | Post Office Protocol (POP3) for retrieving email                                                   |
+    | 123  | Network Time Protocol (NTP) for managing time                                                      |
+    | 161  | Simple Network Management Protocol (SNMP) for managing network devices such as routers or printers |
+    | 194  | Internet Relay Chat (IRC) for chatting                                                             |
+    | 443  | HTTP Secure (HTTPS) for secure web requests                                                        |
+- when you built your web server you externally exposed port 22 so that you could use SSH to open remote console on the server, port 443 for secure HTTP communication, and port 80 for unsecure HTTP communication
+- Caddy listens on ports 80 and 443. When Caddy gets a request on port 80, it automatically redirects the request to port 443 so that a secure connection is used.
+- Internally you can have as many web services running as you would like, but each should use a different port to communicate on
+- simon service runs on port 3000 so can't use 3000 for startup service. instead uses 4000
+- doesn't matter what high range port you use, only matters you are consistent and that they are only used by one service.
+
+***HTTP***
+- how the web talks
+- when browser makes a request to a web server it does it using the HTTP protocol
+- when a web client (browser) and a server talk they exchange HTTP requests and responses. browser will make an HTTP request and the server will generate an HTTP response. 
+- exchange seen using ```curl```
+  - **request**
+    - HTTP syntax:
+      <verb> <url path, parameters, anchor> <version>
+      [<header key: value>]*
+      [
+      
+        <body>
+      ]
+    - First line of HTTP request contains the verb of the request followed by the path, parameters, and anchor of the URL, and finally the version of HTTP being used.
+    - following are optional headers defined by key value pairs
+    - after headers you have optional body
+    - body start is delimited from the headers with two new lines
+  - **Response**
+      <version> <status code> <status string>
+      [<header key: value>]*
+      [
+
+        <body>
+      ]
+    - response syntax similar to request syntax
+    - major difference that first line represents the version and the status of the response
+  - Verbs:
+    - | Verb    | Meaning                                                                                                                                                                                                                                                  |
+      |---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+      | GET     | Get the requested resource. This can represent a request to get a single resource or a resource representing a list of resources.                                                                                                                        |
+      | POST    | Create a new resource. The body of the request contains the resource. The response should include a unique ID of the newly created resource.                                                                                                             |
+      | PUT     | Update a resource. Either the URL path, HTTP header, or body must contain the unique ID of the resource being updated. The body of the request should contain the updated resource. The body of the response may contain the resulting updated resource. |
+      | DELETE  | Delete a resource. Either the URL path or HTTP header must contain the unique ID of the resource to delete.                                                                                                                                              |
+      | OPTIONS | Get metadata about a resource. Usually only HTTP headers are returned. The resource itself is not returned.                                                                                                                                              |
+  - Status Codes:
+    - 1xx informational
+    - 2xx - success
+    - 3xx - redirect to some other location, or that previously cached resource is still valid
+    - 4xx - client errors, request is invalid
+    - 5xx - Server errors, request cannot be satisfied due to an error on the server
+    - | Code | Text                                                                                 | Meaning                                                                                                                           |
+      |------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+      | 100  | Continue                                                                             | The service is working on the request                                                                                             |
+      | 200  | Success                                                                              | The requested resource was found and returned as appropriate.                                                                     |
+      | 201  | Created                                                                              | The request was successful and a new resource was created.                                                                        |
+      | 204  | No Content                                                                           | The request was successful but no resource is returned.                                                                           |
+      | 304  | Not Modified                                                                         | The cached version of the resource is still valid.                                                                                |
+      | 307  | Permanent redirect                                                                   | The resource is no longer at the requested location. The new location is specified in the response location header.               |
+      | 308  | Temporary redirect                                                                   | The resource is temporarily located at a different location. The temporary location is specified in the response location header. |
+      | 400  | Bad request                                                                          | The request was malformed or invalid.                                                                                             |
+      | 401  | Unauthorized                                                                         | The request did not provide a valid authentication token.                                                                         |
+      | 403  | Forbidden                                                                            | The provided authentication token is not authorized for the resource.                                                             |
+      | 404  | Not found                                                                            | An unknown resource was requested.                                                                                                |
+      | 408  | Request timeout                                                                      | The request takes too long.                                                                                                       |
+      | 409  | Conflict                                                                             | The provided resource represents an out of date version of the resource.                                                          |
+      | 418  | [I'm a teapot](https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol) | The service refuses to brew coffee in a teapot.                                                                                   |
+      | 429  | Too many requests                                                                    | The client is making too many requests in too short of a time period.                                                             |
+      | 500  | Internal server error                                                                | The server failed to properly process the request.                                                                                |
+      | 503  | Service unavailable                                                                  | The server is temporarily down. The client should try again with an exponential back off.                                         |
+  - Headers:
+    - specify metadata about a request or response
+    - | Header                      | Example                              | Meaning                                                                                                                                                                          |
+      |-----------------------------|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+      | Authorization               | Bearer bGciOiJIUzI1NiIsI             | A token that authorized the user making the request.                                                                                                                             |
+      | Accept                      | image/\*                             | The format the client accepts. This may include wildcards.                                                                                                                       |
+      | Content-Type                | text/html; charset=utf-8             | The format of the content being sent. These are described using standard [MIME](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types) types. |
+      | Cookie                      | SessionID=39s8cgj34; csrftoken=9dck2 | Key value pairs that are generated by the server and stored on the client.                                                                                                       |
+      | Host                        | info.cern.ch                         | The domain name of the server. This is required in all requests.                                                                                                                 |
+      | Origin                      | cs260.click                          | Identifies the origin that caused the request. A host may only allow requests from specific origins.                                                                             |
+      | Access-Control-Allow-Origin | https://cs260.click                  | Server response of what origins can make a request. This may include a wildcard.                                                                                                 |
+      | Content-Length              | 368                                  | The number of bytes contained in the response.                                                                                                                                   |
+      | Cache-Control               | public, max-age=604800               | Tells the client how it can cache the response.                                                                                                                                  |
+      | User-Agent                  | Mozilla/5.0 (Macintosh)              | The client application making the request.                                                                                                                                       |
+  - Body:
+    - format defined by the content-type header. may be HTML text, binary image format, JSON, or JS.
+  - Cookies:
+    - HTTP itself is stateless, meaning one HTTP request does not know anything about a previous or future request. However, that does not mean that a server or client cannot track state across requests
+    - cookies are common methods for tracking state
+    - generated by a server and passed to client as HTTP header
+    - client then caches the cookie and returns it as an HTTP header back to the server on subsequent requests
+    - allows server to remember things like language preference, user's authentication credentials.
+    - server can use cookies to track and share everything that a user does. 
+    - nothing inherently evil about cookies; problem comes from web applications that use them as a means to violate user's privacy or inappropriately monetize their data.
+  - HTTP Versions:
+    - HTTP continually evolves in order to increase performance and support new types of apps.
+
+***FETCH***
+- fetch api is preferred way to make HTTP requests today
+- fetch built into browser's JS runtime. You can call it from JS code running in a browser.
+- basic usage takes a URL and returns promise. promise then function takes callback function asynchronously called when requested URL content is obtained.
+- if returned content is of type application/json you can use the json function on the response object to convert it to a JS object
+- following makes fetch request to get and display inspirational quote
+```js
+fetch('https://api.quotable.io/random')
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+        console.log(jsonResponse);
+    });
+```
+- response:
+```js
+{
+    content: 'Never put off till tomorrow what you can do today.',
+    author: 'Thomas Jefferson',
+}
+```
+- To do a POST request you populate the options parameter with the HTTP method and headers
+```js
+fetch('https://jsonplaceholder.typicode.com/posts', {
+  method: 'POST',
+  body: JSON.stringify({
+    title: 'test title',
+    body: 'test body',
+    userId: 1,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(jsonResponse);
+  });
+```
+
+## Node.js
+- Node.js created in 2009. first successful application for deploying JS outside of a browser.
+- changed the js mindset from browser technology to one that could run on the server as well. 
+- means that js can power your entire technology stack. one language to rule them all. 
+- Node.js is often just referred to as Node, and is currently maintained by the Open.js Foundation.
+
+### Installing NVM and Node.js
+- production env web server comes with Node.js already installed.
+- easiest way to install node.js is first install the Node Version Manager (NVM) and use it to install and manage Node
+
+#### Checking that it's installed
+- node -v
+
+#### Running programs
+- you can execute a line of js with Node.js from your console with the -e parameter
+- node -e "console.log(1+1)"
+- to do real work you need to execute an entire project composed of many files. 
+- Do this by making single starting JS file, named something like index.js that references code found in the rest of your project.
+
+### Node package manager
+- preexisting packages of JS for implementing common tasks helpful
+- to load a package using node.js:
+  - install package locally on your machine using NPM then include a require statement in your code that references package name. 
+- NPM automatically installed when you install Node.js
+- NPM needs to be initialized. 
+  - npm init in js directory with index.js
+  - npm init -y will accept all defaults
+#### Package.json
+- contains:
+  - metadata about the project such as name and default entry JS file
+  - commands/scripts you can execute to do things like run, test, or distribute your code
+  - packages that this project depends upon
+- include node_modules in your .gitignore file.
+- when cloning, first run npm install in project directory, and NPM will download all of the previously installed packages and recreate the node_modules directory.
+- main steps:
+  - Create your project directory
+    Initialize it for use with NPM by running npm init -y
+    Make sure .gitignore file contains node_modules
+    Install any desired packages with npm install <package name here>
+    Add require('<package name here>') to your application's JavaScript
+    Use the code the package provides in your JavaScript
+    Run your code with node index.js
+
+### Creating a web service
+- with js we can write code that listens on a network port, receives HTTP requests, processes them, and then responds. We can use this to create a simple web service that we then execute using Node.js
