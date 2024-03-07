@@ -27,7 +27,7 @@ function onStart() {
     }
 
     addEvents()
-    displayProducts()
+    filterProducts()
 
 }
 
@@ -50,20 +50,26 @@ let products = [
 
 let currentProduct = null;
 
-function filterProducts(filter){
-    if (filter === 'brand'){
-        products.sort((p1, p2) => p1.brand - p2.brand)
-    } else if (filter === 'collection'){
-        products.sort((p1, p2) => p1.collection - p2.collection)
-    } else if (filter === 'style'){
-        products.sort((p1, p2) => p1.type - p2.type)
+function filterProducts(filter) {
+    if (document.getElementById("product")) {
+        while (document.getElementById("product")){
+            document.getElementById("product").remove();
+        }
+        if (filter === 'brand') {
+            products.sort((p1, p2) => p1.brand - p2.brand);
+        } else if (filter === 'collection') {
+            products.sort((p1, p2) => p1.collection - p2.collection);
+        } else if (filter === 'style') {
+            products.sort((p1, p2) => p1.type - p2.type);
+        }
+        displayProducts();
     }
-    displayProducts()
+    else{ displayProducts(); }
 }
 function displayProducts() {
     for (let product of products){
         document.getElementById("products").insertAdjacentHTML('beforeend',
-            '<div id="product" class="p-5 min-h-72 min-w-40 m-12 flex flex-col items-center justify-between">' +
+            '<div id="product" class="p-5 min-h-72 max-h-96 min-w-40 m-12 flex flex-col items-center justify-between">' +
             '        <img id="product-img" class="h-1/2 min-w-32 place-self-center border-2" width="32" src="' + product.image + '" alt="product-image">\n' +
             '        <div id="product-name" class="text-xl">' + product.name + '</div>' +
             '        <div id="product-price" class="">' + product.price + '</div>' +

@@ -1019,3 +1019,52 @@ fetch('https://jsonplaceholder.typicode.com/posts', {
 
 ### Creating a web service
 - with js we can write code that listens on a network port, receives HTTP requests, processes them, and then responds. We can use this to create a simple web service that we then execute using Node.js
+
+### Express
+- express provides support for
+  - Routing requests for service endpoints
+  - Manipulating HTTP requests with JSON body content
+  - Generating HTTP responses
+  - Using middleware to add functionality
+- create express application by using NPM to install Express package then calling express constructor to create the express app and listen for HTTP requests on a desired port.
+```js
+const express = require('express');
+const app = express();
+
+app.listen(8000);
+```
+#### Defining routes
+- express app object supports all HTTP verbs as functions on the object
+- if you want to have a route function that handles an HTTP GET request for the URL path /store/provo you would call the get method on the app
+```js
+app.get('/store/provo', (req, res, next) => {
+    res.send({name: 'provo'});
+});
+```
+- get takes two params, url path matching pattern, and callback function that is invoked when pattern matches
+- callback func has 3 params, represent HTTP request object (req), HTTP response object (res), and next routing function that calls if routing func wants another func to generate a response
+- app compares routing function patterns in the order that they are added to app object.
+  - if two routing funcs with patterns that both match, first added will be called and given the next matching func in the next param
+- real store endpoint would allow any store name to be provided as a param in path. Express supports path params by prefixing param name with a colon.
+  - express creates map of path params and populates it with matching values found in the url path.
+  - then reference params using req.params object
+  - we can rewrite getStore endpoint like this:
+```js
+app.get('/store/:storeName', (req, res, next) => {
+    res.send({name: req.params.storeName});
+});
+```
+- If you want endpoint that used POST or DELETE HTTP verb then use post or delete func on the Express app object
+- route path can also include limited wildcard syntax or even full regular expressions in path pattern. Here are a couple route funcs using diff pattern syntax
+```js
+// Wildcard - matches /store/x and /star/y 
+app.put('/st*/:storeName', (req, res) => res.send({update: req.params.storeName}));
+
+// Pure regex
+app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
+```
+- next parameter omitted. we are not calling next so we don't need it as a param.
+- if you do not call next then no following functions will be invoked for the request.
+
+#### Using middleware
+- standard middle ware has two pieces: mediator and middleware.
