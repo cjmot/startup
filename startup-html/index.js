@@ -13,3 +13,8 @@ app.use(express.static('public'));
 // Router for service endpoints
 var apiRouter = express.Router();
 app.use('api', apiRouter);
+
+
+app.listen(port, function () {
+    console.log(`Listening on port ${port}`);
+});
