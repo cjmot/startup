@@ -1068,3 +1068,51 @@ app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
 
 #### Using middleware
 - standard middle ware has two pieces: mediator and middleware.
+
+#### SOP and CORS
+- SOP - Same Origin Policy
+  - only allows JS to make requests to a domain if it is the same domain that the user is currently viewing
+  - ex request from byu.iinstructure.com for service endpoints made to byu.instructure.com would fail because domains do not match.
+  - provides significant security, but introduces complications when building web apps
+  - why CORS was invented
+- CORS - Cross Origin Resource Sharing
+  - allows client (browser) to specify origin of request then let the server respond with what origins are allowed.
+  - server may say that all origins allowed, ex if they are a general purpose image provider, or only a specific origin is allowed, ex if they are a bank's authentication service.
+  - if server doesn't specify what origin allowed then browser assumes that it must be the same origin
+- With CORS, browser protecting user from accessing course website's authentication endpoint from wrong origin
+- CORS only meant to alert user that something nefarious being attempted.
+  - hacker can still proxy requests through their own server to the course website and completely ignore the Access-Control-Allow-Origin header.
+  - course website needs to implement its own precautions to stop hacker from using its services inappropriately.
+#### Using third party services
+- if you want to make requests to a different domain than the one your web app is hosted on, you need to make sure that domain allows requests as defined by the Access-Control-Allow-Origin header it returns
+- urls you make requests to need to return Access-Control-Allow-Origin headers.
+- you need to test the services you want to use before you include them in your application.
+- make sure they are responding with a * or your calling origin. if not you will not be a le to use them
+
+### Service design
+- Web services provide interactive functionality of your web app. 
+  - commonly authenticate users
+  - track session state
+  - provide, store, and analyze data,
+  - connect peers
+  - aggregate user info
+- making web service easy to use, performant, and extensible factors that determine success of your app
+- good design will result in increased productivity, satisfied users, and lower processing costs
+#### Model and sequence diagrams
+- helpful to model application's primary objects and the interactions of the objects
+- attempt to stay as close to the model that is in your user's mind as possible.
+- avoid introducing model that focuses on programming constructs and infrastructure
+  - ex chat program should model participants, conversations, and messages. 
+  - should not model user devices, notwork connections, and data blobs.
+- once you know your primary objects you can create sequence diagrams that show how the objects interact with each other. This will help clarify your model and define the necessary endpoints.
+- use SequenceDiagram.org for creating and sharing diagrams
+#### Leveraging HTTP
+- web services usually provided over HTTP, and that greatly influences design of the service.
+- HTTP verbs (GET, POST, PUT, DELETE) often mirror designed actions of a web service.
+- ex. web service for managing comments might list comments (GET), create a comment (POST), update a comment (PUT), and delete a comment (DELETE)
+- Likewise, MIME content types defined by IANA are natural fit for defining types of content that you want to provide (HTML, PNG, MP3, MP4) 
+- goal is to leverage those technologies as much as possible so that you don't have to recreate the functionality they provide and instead take advantage of the significant networking infrastructure built up around HTTP
+- includes caching servers to increase performance, edge servers that bring content closer, and replication servers that provide redundant copies of your content and make app more resilient to network failures.
+
+#### Endpoints
+- web service usually divided up into multiple service endpoints
