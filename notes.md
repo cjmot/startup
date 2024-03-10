@@ -1116,3 +1116,79 @@ app.delete(/\/store\/(.+)/, (req, res) => res.send({delete: req.params[0]}));
 
 #### Endpoints
 - web service usually divided up into multiple service endpoints
+- each endpoint provides single functional purpose
+- service endpoints often called an Application Programming Interface (API) throwback to old desktop apps and the programming interfaces that they exposed.
+- things to consider when designing endpoints:
+  - **Grammatical** - with HTTP everything is resource (noun or object). you act on the resource with an HTTP verb. 
+    - ex order resource contained in a store resource. You then create, get, update, and delete order resources on the store resource
+  - **Readable** - resource you are referencing should be clearly readable in the URL path.
+    - ex. order resource might contain the path to both the order and store where the order resource resides: ```/store/provo/order/28502```
+    - makes it easier to remember how to use the endpoint because it is human-readable
+  - **Discoverable** - as you expose resources that contain other resources you can provide endpoints for the aggregated resources.
+    - makes it so someone using your endpoints only needs to remember top level endpoint, and then they can discover everything else.
+    - ex. if you have a store endpoint that returns info about a store you can include an endpoint for working with a store in the response
+  - **Compatible** - when building endpoints make it so that you can add new functionality without breaking existing clients.
+    - usually means that clients of your service endpoints should ignore anything that they don't understand. Consider the two following JSON response versions
+- Version 1:
+```js
+{
+    "name": "John Taylor"
+}
+```
+Version 2
+```js
+{
+"name": "John Taylor",
+"givenName": "John",
+"familyName": "Taylor"
+}
+```
+- 
+    - by adding new rep of the name field, you provide new functionality for clients that know ho wto use the new fields without harming older clients that ignore new fields and simply use old representation
+    - all done without officially versioning the endpoint
+    - if you can control all of your client code you can mark name field as depreciated and in a future version remove it once all the clients have upgraded.
+    - usually you want to keep compatibility with at least one previous version of the endpoint so that there is enough time for all the clients to migrate before compatibility is removed.
+  - **Simple**
+    - keeping endpoints focused on the primary resources of your app helps to avoid temptation to add endpoints that duplicate or create parallel access to primary resources. 
+    - Very helpful to write some simple class and sequence diagrams that outline primary resources before you begin coding. Resources should focus on the actual resources of the system you are modeling. 
+    - should not focus on data structure or devices used ot host the resources. There should only be one way to act on a resource. Endpoints should only do one thing.
+  - **Documented**
+    - The Open API Specification is a good example of tooling that helps create, use, and maintain documentation of your service endpoints. 
+    - make use of such tools in order to provide client libraries for your endpoints and a sandbox for experimentation. 
+    - create an initial draft of your endpoint documentation before you begin will help you mentally clarify your design and produce a better final result.
+
+#### RPC
+- Remote Procedure Calls - expose service endpoints as simple function calls. 
+- when used over HTTP usually leverages POST HTTP verb.
+- name of the function is either entire path of URL or parameter in the POST body
+- one advantage is that it maps directly to function calls that might exist within the server. 
+- Could also be a disadvantage as it directly exposes inner workings of the service, adn creates coupling between endpoints and the implementation.
+#### REST
+- Representational State Transfer - attempts to take advantage of foundational principles of HTTP.
+- REST HTTP verbs always act upon a resource. Operations on a resource impact the state of the resource as it is transferred by a REST endpoint call.
+- This allows for caching functionality of HTTP to work optimally.
+- ex. GET will always return the same resource until a PUT is executed on the resource. When PUT used, cached resource replaced with updated
+
+#### GraphQL
+- focuses on manipulation of data instead of a function call (RPC) or a resource (REST). Heart of GraphQL is query that specifies desired data and how it should be joined and filtered.
+- developed to address frustration concerning the massive number of REST, or RPC calls, that a web app client needed to make in order to support even a simple UI widget
+- Instead of amking a call for getting a store, and then a bunch of calls for getting store's orders and employees, GraphQL would send a single query that would request all of that information in one big JSON response.
+- server would examine the query, join the desired data, then filter out anything that was not wanted.
+- ex.
+```js
+query {
+  getOrder(id: "2197") {
+    orders(filter: {date: {allofterms: "20220505"}}) {
+      store
+      description
+      orderedBy
+    }
+  }
+}
+```
+- helps to remove a lot of the logic for parsing endpoints and mapping requests to specific resources. Basically in GraphQL there is only one endpoint. Query endpoint
+- downside of that is that now the client now has significant power to consume resources on the server. 
+- No clear boundary on what, how much, or how complicated the aggregation of data is. 
+- Also difficult for the server to implement authorization rights to data as they have to be baked into the data schema.
+- However, there are standards for how to define a complex schema.
+- Common GraphQL packages provide support for schema implementations along with database adaptors for query support.
