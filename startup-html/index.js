@@ -24,11 +24,11 @@ apiRouter.post('/cartItem', (req, res) => {
     res.send(cartItems);
 });
 
-apiRouter.delete('/cartItem/:id', (req, res) => {
-    const itemId = req.params.id;
-    cartItems = deleteCartItem(itemId, cartItems);
+apiRouter.delete('/cartItems/delete/:id', (req, res) => {
+    const itemId = Number(req.params.id);
+    cartItems = cartItems.filter(item => item.id !== itemId)
     res.send(cartItems);
-})
+});
 
 app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
@@ -38,17 +38,8 @@ app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
 
-// updateCartItems updates cartItems with a new cart item
 // cart items saved in memory and disappear whenever the service is restarted.
 let cartItems = [];
 function addCartItem(newItem, cartItems) {
     return [...cartItems, newItem];
-}
-
-function deleteCartItem(itemId, cartItems) {
-    const index = cartItems.findIndex(item => item.id === itemId);
-    if (index !== -1) {
-        cartItems.splice(index, 1);
-    }
-    return cartItems;
 }
