@@ -23,7 +23,11 @@ async function getCart() {
             console.log(cartItems)
             loadCart(cartItems);
             setSubtotal();
-        } else {document.getElementById("cart").innerHTML = "<hr /><div id=\"noItemsMessage\" class=\"text-3xl font-semibold pt-10\">No Items in Cart</div>"}
+        } else {
+            document.getElementById("cart").innerHTML = "<hr /><div id=\"noItemsMessage\" class=\"text-3xl font-semibold pt-10\">No Items in Cart</div>";
+            document.getElementById("cartTitle").innerText = `Cart`;
+            document.getElementById("subtotal").innerHTML = 'Subtotal: ---';
+        }
     } catch (error) {
         console.error(error);
     }
@@ -50,7 +54,7 @@ function loadCart(cartItems) {
             )
         }
     } else {
-
+        document.getElementById("cartTitle").innerText = `Cart`
     }
 }
 
