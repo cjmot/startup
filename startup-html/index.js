@@ -24,8 +24,9 @@ apiRouter.post('/cartItem', (req, res) => {
     res.send(cartItems);
 });
 
-apiRouter.delete('/deleteCartItem', (req, res) => {
-    cartItems = deleteCartItem(req.body, cartItems);
+apiRouter.delete('/cartItem/:id', (req, res) => {
+    const itemId = req.params.id;
+    cartItems = deleteCartItem(itemId, cartItems);
     res.send(cartItems);
 })
 
@@ -41,17 +42,13 @@ app.listen(port, () => {
 // cart items saved in memory and disappear whenever the service is restarted.
 let cartItems = [];
 function addCartItem(newItem, cartItems) {
-    cartItems.push(newItem);
-    return cartItems;
+    return [...cartItems, newItem];
 }
 
-function deleteCartItem(newItem, cartItems) {
-    let found = false;
-    for (const [i, item] of cartItems.entries()) {
-        if (item.values === newItem.values) {
-            found = true;
-            cartItems.splice(i, 1);
-            return cartItems;
-        }
+function deleteCartItem(itemId, cartItems) {
+    const index = cartItems.findIndex(item => item.id === itemId);
+    if (index !== -1) {
+        cartItems.splice(index, 1);
     }
+    return cartItems;
 }
