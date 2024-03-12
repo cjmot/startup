@@ -27,6 +27,19 @@
 - changed buttons on login and create account pages to submit on enter without issues.
 - shop page updated to show products based on what **database data** might look like (an array of Product objects with differing values)
 - added websocket placeholder functionality (if price data changes on a product, page notifies them)
+### First Service Deliverable
+- added node and express compatability
+- added index.js and moved working files to public directory
+- converted shop.js to display products from a fake product api (since I don't have any real products to show yet, and adds in an api call to a 3rd party server)
+- added functionality to index.js for call handling, specifically for the cart
+- added POST request to shop.js to add products to the cart
+- deleted old HTML from cart.html and added functionality to display products that have been added to the cart
+- added delete button to each cart item
+- modified and spent hours figuring out the delete request that went to the server and the server side handling. It was very finicky.
+- made some last minute changes to styling
+- 3rd party API call: https://fakestoreapi.com
+- service calls and handling: index.js
+- login placeholder = login.js/create-account.js
 
 ### Kingsland
 ### Description
