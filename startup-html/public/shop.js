@@ -1,37 +1,13 @@
-class Product {
-    constructor(
-        name='',
-        type='all',
-        collection='all',
-        brand='all',
-        description ='',
-        price='',
-        image='',
-
-    ) {
-        this.name = name;
-        this.type = type;
-        this.collection = collection;
-        this.description = description;
-        this.brand = brand;
-        this.price = price;
-        this.image = image;
-    }
-}
-
+window.addEventListener("load", onStart)
 
 function onStart() {
-
     if (localStorage.getItem("userName")) {
         document.getElementById("shopUser").innerHTML = localStorage.getItem("userName");
     }
-
     addEvents()
     getProducts()
 
 }
-
-window.addEventListener("load", onStart)
 
 function addEvents() {
     document.getElementById("byBrand").addEventListener("click", (() => filterProducts('brand')))
@@ -39,14 +15,12 @@ function addEvents() {
     document.getElementById("byStyle").addEventListener("click", (() => filterProducts('style')))
 }
 
-// database call goes here
-
 
 let currentProduct;
-
-function displayProducts() {
+function displayProducts(products) {
+    let productsDiv = document.getElementById("products");
     for (let product of products){
-        document.getElementById("products").insertAdjacentHTML('beforeend',
+        productsDiv.insertAdjacentHTML('beforeend',
             '<div id="product" class="p-5 h-80 w-60 m-10 flex flex-col items-center justify-between items-center text-center">' +
             '        <img id="product-img" class="w-32 h-1/2" src="' + product.image + '" alt="product-image">\n' +
             '        <div id="product-name" class="text-xl">' + product.title + '</div>' +
@@ -59,9 +33,7 @@ function displayProducts() {
 
 function notifications(productName) {
     alert("You will now receive updates for " + productName + "!")
-
 }
-
 
 // Api call
 
@@ -75,9 +47,7 @@ async function getProducts() {
         .then(json=> {
             console.log(json)
             products = json
-            displayProducts()
+            displayProducts(products)
         });
-
-
 }
 
