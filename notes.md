@@ -1,3 +1,4 @@
+# CS260 Notes
 
 **AWS Server**
 - Not as hard to create as I imagined
@@ -1192,3 +1193,264 @@ query {
 - Also difficult for the server to implement authorization rights to data as they have to be baked into the data schema.
 - However, there are standards for how to define a complex schema.
 - Common GraphQL packages provide support for schema implementations along with database adaptors for query support.
+
+### PM2
+- when running programs from console, automatically terminates when you close the console or if the computer restarts 
+- to keep it running full time needs to be registered as a **daemon**. daemon comes from the idea of something that is always there working in the background. Hopefully you only have good daemons running in your background.
+- we want our web services to continue running as a daemon. Also need an easy way to start and stop our services. That is what PM2 does (Process Manager 2)
+- PM2 already installed on your production server as part of the AMI you selected when you launched. 
+- Deployment scripts in simon projects automatically modify pm2 to register and restart your web services. 
+- You shouldn't need to do anything with pm2
+- useful commands:
+  - ```pm2 ls``` - see pm2 in action after ssh-ing into your server.
+    - should print out two services, simon and startup, that are configured to run on web server.
+    - you can try other commands but only if you understand what you're doing. using incorrectly could cause services to stop.
+    - https://github.com/webprogramming260/.github/blob/main/profile/webServices/pm2/pm2.md
+#### Registering new web service
+- if you want to setup another subdomain that accesses a different web service on your web server, you need to :
+  - add rule to the Caddyfile to tell it how to direct requests for the domain
+  - create a directory and add the files for the web service
+  - Configure pm2 to host the web service
+- **Modify Caddyfile**
+  - copy section for the startup subdomain and alter it so that it represents desired subdomain and give it a different port number that is not currently used on your server.
+```
+tacos.cs260.click {
+  reverse_proxy _ localhost:5000
+  header Cache-Control none
+  header -server
+  header Access-Control-Allow-Origin *
+}
+```
+  - tells caddy that when it gets request for tacos.cs260.click it will act as proxy for those requests and pass them on to the web service that is listening on the same machine (localhost) on port 5000.
+  - other settings tell caddy to return headers that disable caching, hide the fact that caddy is the server (no reason to tell hackers anything about your server), and allow any other origin server to make endpoint requests to this subdomain (disabling cors).
+  - you can change settings as needed
+  - restart caddy ```sudo service caddy restart```
+  - caddy will attempt to proxy requests, but there is no web service listening on port 5000 and you will get error from caddy if you make a request to tacos.cs260.click.
+- **Create the web service**
+  - copy the services, startup directory to directory that represents the purpose of your service. ex ```cp -r ~/services/tacos```
+- **Saving the web service**
+  - From ssh console session run pm2 ls, then
+```js
+cd ~/services/tacos
+pm2 start index.js -n tacos -- 5000
+pm2 save
+```
+### Debugging Node.js
+- debug main.js, select debugger Node.js
+- code will execute and the debug console window will automatically open to show you debugger output where you can see the results of console.log() statements
+- you can set breakpoints
+
+#### Debugging Node.js web service
+- to debug web service, use same instructions as before, then set breakpoints on ```getstore``` endpoint callback and the ```app.listen``` call.
+- set browser location to whatever localhost it is.
+
+#### Nodemon
+- nodemon package is wrapper around node that watches for files in the project directory to change. when you change something it automatically restarts node.
+
+### Development and production environments
+- critical to separate where you develop your application, from where the production release of your app is made publicly available.
+- stages such as staging, internal testing, development, external testing, production.
+- most often required to be separate.
+- all put together through continuous integration.
+  - CI processes checkout application code, lint it, build it, test it, stage it, test it more, and then finally, if everything checks out, deploy application to the production environment, and notify the different departments in the company of the release.
+- For us, you will use and manage development environment, and your production environment.
+- never consider production environment a place to develop or experiment with your app. You can shell into the production env to configure your server or to debug a production problem, but deployment of app should happen using automated CI process.
+- our CI process will use a simple console shell script
+#### Automating your deployment
+- advantage of using automated deployment process is that it is reproducible.
+  - can't accidentally delete a file, or misconfigure something with a stray keystroke.
+- having automated script encourages you to iterate quickly because it is so much easier to deploy your code. 
+- you can add small feature, deploy it, and get feedback within minutes from users.
+- deployment scripts change with each new tech that we have to deploy. Initially, just copy up HTML files, but soon they include the ability to modify the config of your web server, run transpiler tools, and bundle code into a deployable package.
+- -k parameter in deployment script deployment provides cred file to access prod env
+- -k param domain name of the prod env
+- -s param represents name of the app you are deploying (either simon or startup)
+- deployment scripts very helpful
+- shell scripting powerful tool for automating common development tasks and is well worth adding to your bucket of skills.
+
+### Uploading files
+- often web apps need to upload one or more files from frontend app running in the browser to backend service. 
+- accomplish by using HTML input element of type file on the frontend, and the Multer NPM package on the backend
+- **Frontend**
+  - register event handler for when selected file changes and only accepts certain file types.
+  - frontend JS handles uploading of file to server and then uses filename returned from server to set the src attribute of the image element in the dom. if error happens then alert displayed to user.
+- **Backend**
+  - to build storage support into our server, first install Multer NPM package to our project. there are others but Multer is commonly used. (npm install multer)
+  - multer handles reading the file from the HTTP request, enforcing size limit of the upload, and storing the file in the uploads directory.
+  - service code does the following:
+    - handles requests for static files so that we can serve up our frontend code
+    - handles errors such as when the 64k file limit is violated
+    - provides a GET endpoint to serve up a file from the uploads directory
+- **Where to store files**
+  - take serious thought about where you store your files. server is not good production level solution because:
+    - only so much available space, only 8GB by default. Once that is used up server will fail to operate correctly, and you may need to rebuild your server
+    - in production system, servers are transient and are often replaced as new versions are released, or capacity requirements change. means you will lose any state you store on your server
+    - server storage not usually backed up. if server fails, you will lose your customer's data
+    - if you have multiple application servers then you can't assume that the server you uploaded the data to is going to be the one you request a download from.
+  - instead use a dedicated storage service that has durability guarantees, is not tied to compute capacity, and can be accessed by multiple application servers.
+
+### Storage services
+- web apps commonly need to store files associated with the app or the users of the app. includes files such as images, user uploads, documents, and movies.
+- files usually have an ID, some metadata, and the bytes representing the file itself. 
+- can be stored using a database service, but overkill and simpler solutions are cheaper.
+- bad idea to store files right on the server. bad because:
+  - server has limited drive space, if that runs out entire app will fail
+  - consider server as ephemeral or temporary. can be thrown away and replaced by a copy at any time. If you start storing files on the server, then server has state that cannot be easily replaced.
+  - need backup copies of your app and user files. if you only have one copy of your files on your server, then they will disappear when your server disappears, and you must always assume that will happen
+- instead use storage service specifically designed to support production storage and delivery of files
+- **AWS S3**
+  - many solutions, one of most popular is AWS S3. has following advantages:
+    - unlimited capacity
+    - only pay for storage that you use
+    - optimized for global access
+    - keeps multiple redundant copies of every file
+    - you can version files
+    - performant
+    - supports metadata tags
+    - can make your files publicly available directly from s3
+    - you can keep files private and only accessible to your app
+  - in this course, no storage for Simon. but if you want to use s3 as storage for Startup, then learn how to use AWS SDK. find detailed info on AWS website. steps are:
+    - creating s3 bucket to store data in
+    - getting credentials so app can access the bucket
+    - using creds in app
+    - using sdk to write, list, read, and delete files from bucket
+    - don't include creds in code. if you put them into GitHub repo they will immediately be stolen and used to take over your aws account
+
+### Data services
+- web apps commonly need to store app and user data persistently. data can be many things, but usually representation of complex interrelated objects.
+  - includes things like user profile, organizational structure, game play info, usage history, billing info, peer relationship, library catalog, and so forth.
+- Historically, SQL databases have served as general purpose data service solution, but after 20110, specialty data services that better support document, graph, JSON, time, sequence, and key-value pair data began to take significant roles in apps from major companies
+- these services called NoSQL solutions because do not use general purpose relational database paradigms popularized by SQL databases.
+- however all have very different underlying data structures, strengths and weaknesses. 
+- you should not simply split all the possible data services into two narrowly defined boxes, SQL and nosql, when you are considering the right data service for your app.
+- **MongoDB**
+  - for projects in this course that require data services, we will use MongoDB.
+  - mongo increases developer productivity by using JSON objects as its core data model. 
+  - makes it easy to have an app that uses JSON from top to bottom of the tech stack. mongo db made up of one or more collections that each contain JSON documents. You can think of a collection as a large array of JS objects, each with unique ID.
+  - mongo has no strict schema requirements. each document in collection usually follows a similar schema, but each doc may have specialized fields that are present, and common fields that are missing.
+  - allows the schema of collection to morph organically as the data model of the app evolves. To add a new field to a mongo collection you just insert the field into the docs as desired.
+  - if field not present, or has different type in some docs, then doc simply doesn't match query criteria when the field is referenced.
+  - Query syntax for mongo also follows JS inspired flavor.
+```js
+// find all houses
+db.house.find();
+
+// find houses with two or more bedrooms
+db.house.find({ beds: { $gte: 2 } });
+
+// find houses that are available with less than three beds
+db.house.find({ status: 'available', beds: { $lt: 3 } });
+
+// find houses with either less than three beds or less than $1000 a night
+db.house.find({ $or: [(beds: { $lt: 3 }), (price: { $lt: 1000 })] });
+
+// find houses with the text 'modern' or 'beach' in the summary
+db.house.find({ summary: /(modern|beach)/i });
+```
+- **Using MongoDB in your app**
+  - first step is install mongodb package using NPM. (npm install mongodb)
+  - next use MongoClient object to make client connection to database server. requires username, password, and the hostname of the database server.
+```js
+const { MongoClient } = require('mongodb');
+
+const userName = 'holowaychuk';
+const password = 'express';
+const hostname = 'mongodb.com';
+
+const url = `mongodb+srv://${userName}:${password}@${hostname}`;
+
+const client = new MongoClient(url);
+```
+  - with client connection you can then get a database object and from that a collection object. Collection object allows you to insert, and query for, documents
+  - you don't have to do anything special to insert a JS object as a mongo doc. you can just call the insertOne function on the collection object and pass it the JS object. 
+  - when you insert a doc, if the database or collection does not exist, Mongo will automatically create them for you. 
+  - when doc is inserted into the collection it will automatically be assigned a unique ID
+- **Managed Services**
+  - much work of a dev team that manages data service has now been moved to services hosted and managed by a 3rd party.
+  - relieves dev team from much dat-to-day maintenance. team can instead focus more on the app and less on the infrastructure.
+  - with managed data service you simply supply the data and the service grows, or shrinks, to support desired capacity and performance criteria.
+- **MongoDB Atlas**
+  - all major cloud providers offer multiple data services. for this class we will use data service provided by MongoDB called Atlas.
+  - main steps to take are
+    - create account
+    - create database cluster
+    - create root database user credentials, remember these
+    - set network access to your database to be available from anywhere
+    - copy connection string and use the info in code
+    - save connection and credential info in your production and development environments as instructed above
+  - you can always find connection string to your Atlas cluster by pressing Connect button from your Database > DataServices view
+- **Keeping keys out of code**
+  - load creds when the app executes. have a JSON configuration file that contains creds that you dynamically load into the JS that makes the database connection
+  - then use the config file in your development environment and deploy it to your production environment, but NEVER commit it to gitHub.
+  - do this:
+    - create ```dbConfig.json``` in same directory as db javascript (e.g. database.js) that you use to make database requests
+    - insert mongo db creds into the dbConfig.json file in JSON format using the following ex
+    - import dbConfig.json content into your database.js file using a Node.js require statement and use the data that it represents to create the connection URL
+    - include dbConfig.json in .gitignore file 
+```js
+const config = require('./dbConfig.json');
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+```
+- **Testing connection on startup**
+  - make an async request to ping the database. ex:
+```js
+const config = require('./dbConfig.json');
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const client = new MongoClient(url);
+const db = client.db('rental');
+
+(async function testConnection() {
+  await client.connect();
+  await db.command({ ping: 1 });
+})().catch((ex) => {
+  console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+  process.exit(1);
+});
+```
+- **Using Mongo from your code**
+  - you should be good to use Atlas from both development and production env.
+  - test with this:
+```js
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
+async function main() {
+  // Connect to the database cluster
+  const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+  const client = new MongoClient(url);
+  const db = client.db('rental');
+  const collection = db.collection('house');
+
+  // Test that you can connect to the database
+  (async function testConnection() {
+    await client.connect();
+    await db.command({ ping: 1 });
+  })().catch((ex) => {
+    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+    process.exit(1);
+  });
+
+  // Insert a document
+  const house = {
+    name: 'Beachfront views',
+    summary: 'From your bedroom to the beach, no shoes required',
+    property_type: 'Condo',
+    beds: 1,
+  };
+  await collection.insertOne(house);
+
+  // Query the documents
+  const query = { property_type: 'Condo', beds: { $lt: 2 } };
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+
+  const cursor = collection.find(query, options);
+  const rentals = await cursor.toArray();
+  rentals.forEach((i) => console.log(i));
+}
+
+main().catch(console.error);
+```
