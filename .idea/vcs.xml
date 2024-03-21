@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/simon-css" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/simon-html" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/simon-javascript" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/simon-login" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/simon-service" vcs="Git" />
   </component>
 </project>
