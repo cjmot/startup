@@ -19,18 +19,21 @@ function onStart() {
 //     document.getElementById("byStyle").addEventListener("click", (() => filterProducts('style')))
 // }
 
+
 function displayProducts(products) {
     let productsDiv = document.getElementById("products");
     for (let product of products){
         productsDiv.insertAdjacentHTML('beforeend',
-            `<div id="${product.title}" class="p-5 h-80 w-60 m-10 flex flex-col items-center justify-between items-center text-center">
-                    <img id="product-img" class="w-32 h-1/2" src="${product.image}" alt="product-image">
-                    <div id="product-name" class="text-xl">${product.title}</div>
+            `<div id="${product.title}" class=" flex-none h-50 w-60 m-5 p-5 flex flex-col items-center justify-between space-y-2 text-center">
+                    <div id="imgContainer" class=""><img id="product-img" class=" h-32" src="${product.image}" alt="product-image"></div>
+                    <div id="nameContainer" class="relative h-14 w-full flex flex-col">
+                        <div id="product-name" class="text-xl font-semibold h-full line-clamp-2">${product.title}</div>                    
+                    </div>
                     <div id="product-price" class="">$${product.price}</div>
-                    <button id="notifications" type="button" onclick="notifications('${product.title}')"><span class="material-symbols-outlined">notifications</span></button>
-                    <button id="add-to-cart-button" type="button" class="w-full h-16 bg-blue-400 px-4 py-2 text-sm hover:bg-blue-500 font-medium hover:font-bold hover:transition" 
+                    <button id="add-to-cart-button" type="button" class="flex-none w-full h-12 bg-blue-400 px-4 py-2 text-sm hover:bg-blue-500 font-medium hover:font-bold hover:transition" 
                     data-product="${product.title}" onclick="addToCart(this.dataset.product)">ADD TO CART</button>
                  </div>`);
+
     }
 
 }
