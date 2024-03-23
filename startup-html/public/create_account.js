@@ -1,28 +1,41 @@
+async function createUser(){
+    create_account();
+}
+
+
 async function create_account() {
-    localStorage.clear();
-    const userName = document.getElementById("createName").value;
-    const password = document.getElementById("createPassword").value;
-    const confPassword = document.getElementById("passwordConfirmation").value;
+    const userNameInput = document.querySelector("#createName");
+    const passwordInput = document.querySelector("#createPassword");
+    const confPasswordInput = document.querySelector("#passwordConfirmation");
+    const userName = userNameInput?.value.trim();
+    const password = passwordInput?.value;
+    const confPassword = confPasswordInput?.value;
+
+    // input validation
+    if (!userName || !password || !confPassword) {
+        alert("Please fill in all fields");
+        return;
+    }
     if (confPassword !== password) {
         alert("Passwords must match");
+        return;
     }
-    else {
-        const response = await fetch('api/auth/create', {
-            method: 'post',
-            body: JSON.stringify({email: userName, password: password}),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        });
+    const body = JSON.stringify({email: userName, password: password});
+    console.log(body);
+    const response = await fetch('/api/auth/create', {
+        method: 'POST',
+        body: body,
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    });
 
-        if (response.ok) {
-            alert("Account created");
-            localStorage.setItem("userName", userName);
-            localStorage.setItem("email", email);
-            localStorage.setItem("password", password);
-        } else {
-            const body = await response.json();
-            alert(body.msg)
-        }
+    if (response.ok) {
+        alert("Account created successfully.");
+        localStorage.setItem("userName", userName);
+        window.location.href = "/index.html";
+    } else {
+        const responseBody = await response.json();
+        alert(responseBody.msg || "An error occurred while creating the account.");
     }
 }

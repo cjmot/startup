@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js');
-const {updateCartItems} = require("./database");
 
 const authCookieName = 'token';
 
@@ -73,7 +72,7 @@ var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
-    const authToken = req.cookies[authCookieName];
+    authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if (user) {
         next();
@@ -82,7 +81,6 @@ secureApiRouter.use(async (req, res, next) => {
     }
 })
 
-// Get cart
 secureApiRouter.get('/products', async (req, res) => {
     const products = await DB.getProducts();
     res.send(products);
@@ -95,13 +93,16 @@ secureApiRouter.post('/product', async (req, res) => {
     res.send(products);
 });
 
-secureApiRouter.delete('/cartItems/delete', async (req, res) => {
-    await updateCartItems(req.body.email, Number(req.body.id))
-    const cartItems = await DB.getCartItems(req.body.email)
+secureApiRouter.delete('/cartItems/deleteCartItem', async (req, res) => {
+    const email = req.query.email;
+    const itemId = req.query.id;
+    console.log(email);
+    await DB.updateCartItems(email, Number(itemId))
+    const cartItems = await DB.getCartItems(email)
     res.send(cartItems);
 });
 
-secureApiRouter.post('/cartItems', async (req, res) =>{
+secureApiRouter.post('/cartItem', async (req, res) =>{
     const cartItem = req.body;
     await DB.addCartItem(cartItem);
     const cartItems = await DB.getCartItems(req.body.email);
@@ -122,10 +123,6 @@ app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
 });
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
-
 function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {
         secure: true,
@@ -133,3 +130,7 @@ function setAuthCookie(res, authToken) {
         sameSite: 'strict',
     });
 }
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});

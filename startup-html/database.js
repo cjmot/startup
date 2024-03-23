@@ -27,6 +27,11 @@ function getUserByToken(token) {
 }
 
 async function createUser(email, password) {
+    const existingUser = await getUser(email);
+    if (existingUser) {
+        throw new Error('User with this email already exists');
+    }
+
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = {
