@@ -1,7 +1,6 @@
 async function create_account() {
     localStorage.clear();
     const userName = document.getElementById("createName").value;
-    const email = document.getElementById("createEmail").value;
     const password = document.getElementById("createPassword").value;
     const confPassword = document.getElementById("passwordConfirmation").value;
     if (confPassword !== password) {

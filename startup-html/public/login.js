@@ -13,7 +13,7 @@ async function loginUser() {
     });
 
     if (response.ok) {
-        localStorage.setItem('username', userName);
+        localStorage.setItem('userName', userName);
         window.location.href = "shop.html";
     } else {
         const body = await response.json();
