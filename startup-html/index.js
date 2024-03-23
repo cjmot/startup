@@ -72,8 +72,8 @@ apiRouter.get('/user/:email', async (req, res) => {
 var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
-secureApiRouter.use(async (req, res) => {
-    authToken = req.cookies[authCookieName];
+secureApiRouter.use(async (req, res, next) => {
+    const authToken = req.cookies[authCookieName];
     const user = await DB.getUserByToken(authToken);
     if (user) {
         next();
