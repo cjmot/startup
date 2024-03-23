@@ -7,7 +7,8 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('startup');
 const userCollection = db.collection('user');
-const productCollection = db.collection('score');
+const productCollection = db.collection('product');
+const cartCollection = db.collection('cart');
 
 (async function testConnection() {
     await client.connect();
@@ -48,10 +49,21 @@ function getProducts() {
     return cursor.toArray();
 }
 
+function addCartItem(cartItem) {
+    cartCollection.insertOne((cartItem));
+}
+
+function getCartItems(email) {
+    const cursor = cartCollection.find({ email: email })
+    return cursor.toArray();
+}
+
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
     addProduct,
     getProducts,
+    addCartItem,
+    getCartItems,
 };
