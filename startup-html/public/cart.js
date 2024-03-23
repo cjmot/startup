@@ -20,7 +20,6 @@ async function getCart() {
         }
         cartItems = await response.json();
         if (cartItems.length > 0) {
-            console.log(cartItems)
             loadCart(cartItems);
             setSubtotal();
         } else {
@@ -67,8 +66,9 @@ function setSubtotal() {
 }
 
 async function deleteCartItem(itemId) {
+    const email = localStorage.getItem("userName");
     try {
-        const response = await fetch(`/api/cartItems/delete/${itemId}`, {
+        const response = await fetch(`/api/cartItems/deleteCartItem?email=${email}&id=${itemId}`, {
             method: 'DELETE',
         });
         if (!response.ok) {

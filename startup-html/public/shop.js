@@ -1,4 +1,5 @@
 window.addEventListener("load", onStart)
+const email = localStorage.getItem("userName");
 
 
 let products = [];
@@ -8,7 +9,7 @@ async function onStart() {
     await getProducts();
     displayProducts(products);
     if (localStorage.getItem("userName")) {
-        document.getElementById("shopUser").innerHTML = localStorage.getItem("userName");
+        document.getElementById("shopUser").innerHTML = email;
         document.querySelectorAll("#add-to-cart-button").forEach((button) => {
             button.disabled = false;
         })
@@ -62,11 +63,9 @@ async function getProducts() {
 
 async function addToCart(productTitle) {
     const originalProduct = findProduct(productTitle);
-    const product = {...originalProduct, email: localStorage.getItem('userName')}
-
-    console.log(product);
+    const product = {...originalProduct, email: email}
     try {
-        const response = await fetch('api/cartItems', {
+        const response = await fetch('api/cartItem', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(product),
