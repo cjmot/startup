@@ -54,8 +54,13 @@ function addCartItem(cartItem) {
 }
 
 function getCartItems(email) {
-    const cursor = cartCollection.find({ email: email })
+    const cursor = cartCollection.find({ email: email });
     return cursor.toArray();
+}
+
+function updateCartItems(email, id) {
+    const filter = { email: email, id: id };
+    cartCollection.deleteOne(filter);
 }
 
 module.exports = {
@@ -66,4 +71,5 @@ module.exports = {
     getProducts,
     addCartItem,
     getCartItems,
+    updateCartItems,
 };
