@@ -4,20 +4,22 @@ window.addEventListener("load", onStart)
 let products = [];
 
 
-function onStart() {
+async function onStart() {
+    await getProducts();
+    displayProducts(products);
     if (localStorage.getItem("userName")) {
         document.getElementById("shopUser").innerHTML = localStorage.getItem("userName");
+        document.querySelectorAll("#add-to-cart-button").forEach((button) => {
+            button.disabled = false;
+        })
+    } else {
+        addToCartAlert()
     }
-    // addEvents()
-    getProducts().then(products => displayProducts(products));
-
 }
 
-// function addEvents() {
-//     document.getElementById("byBrand").addEventListener("click", (() => filterProducts('brand')))
-//     document.getElementById("byCollection").addEventListener("click", (() => filterProducts('collection')))
-//     document.getElementById("byStyle").addEventListener("click", (() => filterProducts('style')))
-// }
+function addToCartAlert() {
+    alert("Add to cart buttons will function upon login");
+}
 
 
 function displayProducts(products) {
@@ -31,15 +33,11 @@ function displayProducts(products) {
                     </div>
                     <div id="product-price" class="">$${product.price}</div>
                     <button id="add-to-cart-button" type="button" class="flex-none w-full h-12 bg-blue-400 px-4 py-2 text-sm hover:bg-blue-500 font-medium hover:font-bold hover:transition" 
-                    data-product="${product.title}" onclick="addToCart(this.dataset.product)">ADD TO CART</button>
+                    data-product="${product.title}" onclick="addToCart(this.dataset.product)" disabled>ADD TO CART</button>
                  </div>`);
 
     }
 
-}
-
-function notifications(productName) {
-    alert("You will now receive updates for " + productName + "!")
 }
 
 // Api calls
@@ -57,17 +55,18 @@ async function getProducts() {
         return json;
     } catch (error) {
         console.error(error);
-        // Handle error
         return [];
     }
 }
 
 
 async function addToCart(productTitle) {
-    let product = findProduct(productTitle)
-    console.log(product)
+    const originalProduct = findProduct(productTitle);
+    const product = {...originalProduct, email: localStorage.getItem('userName')}
+
+    console.log(product);
     try {
-        const response = await fetch('api/cartItem', {
+        const response = await fetch('api/cartItems', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(product),
