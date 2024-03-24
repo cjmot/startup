@@ -6,6 +6,13 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/testExpress" />
+      <excludeFolder url="file://$MODULE_DIR$/authTest" />
+      <excludeFolder url="file://$MODULE_DIR$/mongoTest" />
+      <excludeFolder url="file://$MODULE_DIR$/simon-css" />
+      <excludeFolder url="file://$MODULE_DIR$/simon-html" />
+      <excludeFolder url="file://$MODULE_DIR$/simon-javascript" />
+      <excludeFolder url="file://$MODULE_DIR$/simon-login" />
+      <excludeFolder url="file://$MODULE_DIR$/simon-service" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

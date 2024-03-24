@@ -14,7 +14,7 @@ const cartCollection = db.collection('cart');
     await client.connect();
     await db.command({ ping: 1 });
 })().catch((ex) => {
-    console.log(`Unable to conenct to database with ${url} because ${ex.message}`);
+    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
     process.exit(1);
 })
 

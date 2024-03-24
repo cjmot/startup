@@ -20,22 +20,27 @@ async function create_account() {
         alert("Passwords must match");
         return;
     }
-    const body = JSON.stringify({email: userName, password: password});
-    console.log(body);
-    const response = await fetch('/api/auth/create', {
-        method: 'POST',
-        body: body,
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    });
+    try {
+        const body = JSON.stringify({email: userName, password: password});
+        console.log(body);
+        const response = await fetch("/api/auth/create", {
+            method: 'POST',
+            body: body,
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
 
-    if (response.ok) {
-        alert("Account created successfully.");
-        localStorage.setItem("userName", userName);
-        window.location.href = "/index.html";
-    } else {
-        const responseBody = await response.json();
-        alert(responseBody.msg || "An error occurred while creating the account.");
+        if (response.ok) {
+            alert("Account created successfully.");
+            localStorage.setItem("userName", userName);
+            window.location.href = "index.html";
+        } else {
+            const responseBody = await response.json();
+            alert(responseBody.msg || "An error occurred while creating the account.");
+        }
+    } catch (error) {
+        console.error("Error logging in:", error);
+        alert('An error occurred when creating account. Please try again later');
     }
 }

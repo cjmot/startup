@@ -1173,7 +1173,7 @@ Version 2
 #### GraphQL
 - focuses on manipulation of data instead of a function call (RPC) or a resource (REST). Heart of GraphQL is query that specifies desired data and how it should be joined and filtered.
 - developed to address frustration concerning the massive number of REST, or RPC calls, that a web app client needed to make in order to support even a simple UI widget
-- Instead of amking a call for getting a store, and then a bunch of calls for getting store's orders and employees, GraphQL would send a single query that would request all of that information in one big JSON response.
+- Instead of making a call for getting a store, and then a bunch of calls for getting store's orders and employees, GraphQL would send a single query that would request all of that information in one big JSON response.
 - server would examine the query, join the desired data, then filter out anything that was not wanted.
 - ex.
 ```js
