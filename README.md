@@ -1,6 +1,6 @@
 # startup
 
-### First Html deliverable
+#### Html deliverable
 - navigation tabs created for all pages
 - authentication page (index.html) routes to create-account.html and shop.html
 - shop.html includes database data (product information) and websocket data (reviews and product prices)
@@ -9,7 +9,8 @@
 - contact us button placed in footer of all pages, routes to contact.html
 - changed login page to exclude other nav tabs, only route to it now is from create account and profile pages.
 - added kingsland logo to all pages
-### First CSS deliverable
+
+#### CSS deliverable
 - nav logos created and spaced on the right of the header of all pages
 - headers and footers unified and styled across all pages
 - shop made to include filter tabs on the left, and products on the right.
@@ -18,7 +19,8 @@
 - login and create account pages are almost exactly the same, with information in the middle of the page. login button takes you to shop page.
 - About page styled to include header and information aligned in the center of the page.
 - Profile includes shipping and billing info centered on the page with an edit info button underneath
-### First JavaScript deliverable
+
+#### JavaScript deliverable
 - added js files for all pages
 - create account and login functionality created, name, password, and email stored in local storage from create account page
 - login checks if name and password matches what is in local storage
@@ -27,7 +29,8 @@
 - changed buttons on login and create account pages to submit on enter without issues.
 - shop page updated to show products based on what **database data** might look like (an array of Product objects with differing values)
 - added websocket placeholder functionality (if price data changes on a product, page notifies them)
-### First Service Deliverable
+
+#### Service Deliverable
 - added node and express compatability
 - added index.js and moved working files to public directory
 - converted shop.js to display products from a fake product api (since I don't have any real products to show yet, and adds in an api call to a 3rd party server)
@@ -40,6 +43,21 @@
 - 3rd party API call: https://fakestoreapi.com
 - service calls and handling: index.js
 - login placeholder = login.js/create-account.js
+
+### Login Deliverable
+- added mongodb, uuid, and other necessary packages
+- added database file and user functionality
+- added cart and product functionality to database file
+- updated index.js to use user database calls
+- updated home page and create_user page calls to match server
+- added cart and product database calls to index.js
+- updated cart and shop pages to function with new database calls
+- hours upon countless hours upon even more countless hours of debugging
+- new user registration: create_user.js
+- existing user authentication: login.js
+- application data: shop.js, cart.js (shop adds to database, cart displays and deletes)
+- credentials: index.js
+- restricts application functionality based upon authentication: index.js, shop.js(can't add to cart without logging in)
 
 ### Kingsland
 ### Description
