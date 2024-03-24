@@ -43,7 +43,7 @@ function displayProducts(products) {
 
 // Api calls
 
-const fakeStoreApiUrl = 'https://fakestoreapi.com/products'
+const fakeStoreApiUrl = 'https://fakestoreapi.com/products';
 
 async function getProducts() {
     try {
@@ -72,9 +72,10 @@ async function addToCart(productTitle) {
         });
         if (!response.ok) {
             console.log('Failed to add item to cart');
+        } else {
+            console.log('Item added to cart:', product);
         }
-        const data = await response.json();
-        console.log('Item added to cart:', data);
+
     } catch (error) {
         console.error('Error adding item to cart:', error);
     }

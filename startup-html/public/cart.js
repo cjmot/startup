@@ -1,34 +1,36 @@
 window.addEventListener("load", onStart)
+let email;
 let loggedIn = false;
 
-let cartItems;
-
 function onStart() {
-
-    if (localStorage.getItem("userName")) {
+    email = localStorage.getItem("userName");
+    if (email) {
         loggedIn = true;
         document.getElementById("cartUser").innerHTML = localStorage.getItem("userName");
     }
-    getCart();
+    getCart(email);
 }
 
-async function getCart() {
+async function getCart(email) {
     try {
-        const response = await fetch('/api/cartItems');
+        const response = await fetch(`/api/cartItems?email=${email}`);
         if (!response.ok){
             console.error('Failed to fetch products');
+            return [];
         }
-        cartItems = await response.json();
+        const cartItems = await response.json();
+        console.log(cartItems);
+        console.log(email);
         if (cartItems.length > 0) {
             loadCart(cartItems);
-            setSubtotal();
+            setSubtotal(cartItems);
         } else {
             document.getElementById("cart").innerHTML = "<hr /><div id=\"noItemsMessage\" class=\"text-3xl font-semibold pt-10\">No Items in Cart</div>";
             document.getElementById("cartTitle").innerText = `Cart`;
             document.getElementById("subtotal").innerHTML = 'Subtotal: ---';
         }
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching cart items:', error);
     }
 }
 
@@ -57,7 +59,7 @@ function loadCart(cartItems) {
     }
 }
 
-function setSubtotal() {
+function setSubtotal(cartItems) {
     let subtotal = 0;
     for (let item of cartItems) {
         subtotal += item.price;
@@ -66,17 +68,16 @@ function setSubtotal() {
 }
 
 async function deleteCartItem(itemId) {
-    const email = localStorage.getItem("userName");
     try {
         const response = await fetch(`/api/cartItems/deleteCartItem?email=${email}&id=${itemId}`, {
             method: 'DELETE',
         });
-        if (!response.ok) {
+        if (response.ok) {
+            alert('Item was removed from your cart');
+            onStart();
+        } else {
             console.error('Failed to delete item from cart');
-            return;
         }
-        alert('Item was removed from your cart');
-        onStart();
     } catch (error) {
         console.error('Error deleting item from cart:', error);
     }

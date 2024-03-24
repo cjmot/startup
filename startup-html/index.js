@@ -108,8 +108,14 @@ secureApiRouter.post('/cartItem', async (req, res) =>{
 })
 
 secureApiRouter.get('/cartItems', async (req, res) => {
-    const cartItems = await DB.getCartItems(req.body)
-    return res.send(cartItems)
+    try {
+        const email = req.query.email;
+        const cartItems = await DB.getCartItems(email);
+        return res.send(cartItems)
+    } catch (error) {
+        console.error('Error fetching cart items:', error);
+        res.status(500).send({ error: 'Internal server error' });
+    }
 })
 
 app.use(function (err, req, res, _next) {
