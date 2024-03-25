@@ -74,6 +74,7 @@ async function addToCart(productTitle) {
             console.log('Failed to add item to cart');
         } else {
             console.log('Item added to cart:', product);
+            alert(`Item added to cart: ${product.title}`);
         }
 
     } catch (error) {
