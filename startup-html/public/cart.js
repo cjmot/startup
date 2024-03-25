@@ -1,6 +1,7 @@
 window.addEventListener("load", onStart)
 let email;
 let loggedIn = false;
+let cartItems;
 
 function onStart() {
     email = localStorage.getItem("userName");
@@ -18,16 +19,17 @@ async function getCart(email) {
             console.error('Failed to fetch products');
             return [];
         }
-        const cartItems = await response.json();
-        console.log(cartItems);
-        console.log(email);
+        cartItems = await response.json();
+        let hiddenBool = true;
         if (cartItems.length > 0) {
+            hiddenBool = false;
+            setHiddenElements(hiddenBool);
             loadCart(cartItems);
             setSubtotal(cartItems);
         } else {
             document.getElementById("cart").innerHTML = "<hr /><div id=\"noItemsMessage\" class=\"text-3xl font-semibold pt-10\">No Items in Cart</div>";
             document.getElementById("cartTitle").innerText = `Cart`;
-            document.getElementById("subtotal").innerHTML = 'Subtotal: ---';
+            setHiddenElements(hiddenBool);
         }
     } catch (error) {
         console.error('Error fetching cart items:', error);
@@ -60,11 +62,13 @@ function loadCart(cartItems) {
 }
 
 function setSubtotal(cartItems) {
+    const subtotalEl = document.getElementById("subtotal");
     let subtotal = 0;
     for (let item of cartItems) {
         subtotal += item.price;
     }
-    document.getElementById("subtotal").innerText = "Subtotal: $" + subtotal.toString();
+    const result = Math.round(subtotal*100)/100
+    subtotalEl.innerText = "Subtotal: $" + result.toString();
 }
 
 async function deleteCartItem(itemId) {
@@ -73,7 +77,8 @@ async function deleteCartItem(itemId) {
             method: 'DELETE',
         });
         if (response.ok) {
-            alert('Item was removed from your cart');
+            console.log(`Item was removed from your cart, cart:`, response);
+            alert(`Item was removed from your cart`)
             onStart();
         } else {
             console.error('Failed to delete item from cart');
@@ -83,3 +88,14 @@ async function deleteCartItem(itemId) {
     }
 }
 
+function setHiddenElements(bool) {
+    const checkoutButton = document.querySelector("#checkoutButton");
+    const subtotalEl = document.getElementById("subtotal");
+
+    checkoutButton.hidden = bool;
+    subtotalEl.hidden = bool;
+}
+
+function navigateToCheckout() {
+    window.location.href = 'checkout.html';
+}
