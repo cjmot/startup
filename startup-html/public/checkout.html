@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <script src="checkout.js"></script>
 
 </head>
-<body class="flex flex-col m-0 h-full font-sans text-gray-700">
+<body class=" flex flex-col m-0 h-screen w-screen font-sans text-gray-700">
 <header class="flex-none h-fit max-w-full flex flex-col justify-center items-center m-4">
     <img src="images/kingslandlogo_wordmark-blue.png" alt="images/favicon.ico" style="width: 200px">
     <nav class="self-end flex-none flex flex-row items-center space-x-4 text-xl">
@@ -30,8 +30,8 @@
 
 </header>
 <hr />
-<main class="flex-auto overflow-y-scroll overflow-x-none flex flex-row justify-between items-center">
-    <section id="info" class="flex-auto flex flex-col m-5 space-y-5">
+<main class="overflow-y-auto h-auto w-full flex-1 flex flex-row justify-between items-center">
+    <section id="info" class=" flex-1 flex flex-col items-start m-5 space-y-5">
         <div id="billing" >
             <div class="text-3xl">Billing</div>
             <div id="billing-info" class="flex flex-row flex-wrap">
@@ -41,13 +41,13 @@
 
                 </div>
                 <div class="flex flex-col m-1">
+                    <label for="exp-date">Exp Date</label>
+                    <input class="border-2 p-2 h-10 w-20 font-medium focus:placeholder-transparent" type="text" id="exp-date" placeholder="mm/yy"/>
+                </div>
+                <div class="flex flex-col m-1">
                     <label for="card-number">Card Number</label>
                     <input class="border-2 p-2 h-10 font-medium focus:placeholder-transparent" type="text" id="card-number" />
 
-                </div>
-                <div class="flex flex-col m-1">
-                    <label for="exp-date">Exp Date</label>
-                    <input class="border-2 p-2 h-10 w-20 font-medium focus:placeholder-transparent" type="text" id="exp-date" placeholder="mm/yy"/>
                 </div>
                 <div class="flex flex-col m-1">
                     <label for="cvv">CVV</label>
@@ -87,63 +87,19 @@
                 </div>
             </div>
         </div>
+        <div id="checkoutSubtotal" class="text-lg"></div>
         <div>
             <form action="shop.html">
                 <button class="w-52 border-black text-center py-3 px-7 bg-blue-400 font-medium hover:font-bold hover:bg-blue-500 transition" type="submit">PLACE ORDER</button>
             </form>
         </div>
     </section>
-    <div id="cart" class="flex-none overflow-x-none justify-self-end max-w-100 min-w-68 ml-5 flex flex-col justify-end">
-        <div class="text-3xl text-center">Cart</div>
-        <div id="product" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name" class="text-xl pb-4">Product Name</div>
-                <div id="product-price" class="">$$$</div>
-            </div>
+    <section id="cartSection" class="overflow-y-auto h-full w-full overflow-x-hidden flex-1 min-w-40 max-w-fit ml-5 flex flex-col justify-end place-self-start">
+        <div id="checkoutCartTitle" class="flex-none self-center text-4xl font-medium m-5"></div>
+        <div id="checkoutCart" class="overflow-y-auto flex-1 overflow-x-hidden h-full max-w-full ml-5 flex flex-col">
+
         </div>
-        <hr/>
-        <div id="product2" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img2" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name2" class="text-xl pb-4">Product Name</div>
-                <div id="product-price2" class="">$$$</div>
-            </div>
-        </div>
-        <hr/>
-        <div id="product3" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img3" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name3" class="text-xl pb-4">Product Name</div>
-                <div id="product-price3" class="">$$$</div>
-            </div>
-        </div>
-        <hr/>
-        <div id="product4" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img4" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name4" class="text-xl pb-4">Product Name</div>
-                <div id="product-price4" class="">$$$</div>
-            </div>
-        </div>
-        <hr/>
-        <div id="product5" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img5" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name5" class="text-xl pb-4">Product Name</div>
-                <div id="product-price5" class="">$$$</div>
-            </div>
-        </div>
-        <hr/>
-        <div id="product6" class=" min-w-40 m-5 flex flex-row">
-            <img id="product-img6" class="h-32 min-w-32 border-2" width="32" src="//img.ltwebstatic.com/images3_pi/2021/12/10/16391012757378a5e668f4378f9907939fab3eb501_thumbnail_900x.jpg" alt="product-image">
-            <div class="flex flex-col px-4">
-                <div id="product-name6" class="text-xl pb-4">Product Name</div>
-                <div id="product-price6" class="">$$$</div>
-            </div>
-        </div>
-        <hr/>
-    </div>
+    </section>
 </main>
 <hr />
 <footer class="h-16 flex-none flex flex-row justify-center space-x-4 items-center">
