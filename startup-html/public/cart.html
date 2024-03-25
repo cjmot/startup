@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <script src="cart.js"></script>
 
 </head>
-<body class="flex flex-col m-0 h-full font-sans text-gray-700">
+<body class="flex flex-col m-0 h-screen w-screen font-sans text-gray-700">
 <header class="flex-none h-fit max-w-full flex flex-col justify-center items-center m-4">
     <img src="images/kingslandlogo_wordmark-blue.png" alt="images/favicon.ico" style="width: 200px">
     <nav class="self-end flex-none flex flex-row items-center space-x-4 text-xl">
@@ -30,10 +30,11 @@
 
 </header>
 <hr />
-<main class="flex-auto overflow-y-scroll h-screen flex flex-col">
+<main class="overflow-y-auto overflow-x-hidden flex-auto h-auto w-full flex flex-col">
     <div id="cartTitle" class="self-center text-4xl font-medium m-5">Cart</div>
-    <section class="w-full flex-none min-w-fit flex flex-row justify-between">
-        <div id="cart" class="w-full ml-5 flex flex-col">
+    <hr />
+    <section class="overflow-y-auto overflow-x-hidden w-full h-full flex-1 min-w-fit flex flex-row justify-between">
+        <div id="cart" class="overflow-y-auto overflow-x-hidden flex-1 w-full h-full ml-5 flex flex-col">
             <hr />
             <div id="noItemsMessage" class="text-3xl font-semibold pt-10">No Items in Cart</div>
         </div>
