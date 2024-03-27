@@ -44,12 +44,12 @@ function displayProducts(products) {
     let productsDiv = document.getElementById("products");
     for (let product of products){
         productsDiv.insertAdjacentHTML('beforeend',
-            `<div id="${product.title}" class=" flex-none h-50 w-60 m-5 p-5 flex flex-col items-center justify-between space-y-2 text-center">
+            `<div id="${product.title}" class=" border-2 rounded-lg flex-none h-50 w-60 m-5 p-5 flex flex-col items-center justify-between space-y-2 text-center">
                     <div id="imgContainer" class=""><img id="product-img" class=" h-32" src="${product.image}" alt="product-image"></div>
-                    <div id="nameContainer" class="relative h-14 w-full flex flex-col">
-                        <div id="product-name" class="text-xl font-semibold h-full line-clamp-2">${product.title}</div>                    
+                    <div id="nameContainer" class="relative h-14 w-full flex flex-col justify-center">
+                        <div id="product-name" class=" text-xl font-semibold h-full line-clamp-2">${product.title}</div>                    
                     </div>
-                    <div id="product-price" class="">$${product.price}</div>
+                    <div id="product-price" class="">$${product.price.toFixed(2)}</div>
                     <button id="add-to-cart-button" type="button" class="flex-none w-full h-12 bg-blue-400 px-4 py-2 text-sm hover:bg-blue-500 font-medium hover:font-bold hover:transition" 
                     data-product="${product.title}" onclick="addToCart(this.dataset.product)" disabled>ADD TO CART</button>
                  </div>`);

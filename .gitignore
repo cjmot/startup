@@ -23,3 +23,9 @@ node_modules/
 /playwright/.cache/
 
 /testJest/
+
+/testWebSocket/
+
+/websocket-chat/
+
+/simon-websocket/
