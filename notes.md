@@ -1838,3 +1838,51 @@ code .
 
 #### Testing endpoints
 - to test endpoints we need another package so that we can make http requests without having to actually send them over the network. This is done with supertest
+
+### WebSocket
+- HTTP based on client-server architecture. Client always initiates request and the server responds. Great if you are building global document library connected by hyperlinks, but for many other cases it just doesn't work.
+- apps for notifications, distributed task processing, peer-to-peer communication, or asynchronous events need communication that is initiated by two or more connected devices.
+- Websocket created to solve problems. 
+- core feature of WebSocket is that it is fully duplexed. Means that after the initial connection is made from a client, using vanilla HTTp, and then upgraded by the server to a WebSocket connection, the relationship changes to a peer-to-peer connection where either party can efficiently send data at any time.
+- Websocket connections are still only between two parties. so if you want to facilitate a conversation between a group of users, the server must act as the intermediary. each peer must first connect to the server, then the server forwards messages amongst the peers
+
+#### Creating a WebSocket conversation
+- JS running on a browser can initiate a WebSocket connection with the browser's WebSocket API. 
+- first create Websocket object by specifying the port you want to communicate on.
+- then send messages with the send function, and register a callback using the onmessage function to receive messages.
+```js
+const socket = new WebSocket('ws://localhost:9900');
+
+socket.onmessage = (event) => {
+    console.log('received: ', event.data);
+};
+
+socket.send('I am listening');
+```
+- server uses the ws package to create a WebSocketServer that is listening on the same port the browser is using. By specifying a port when you create the WebSocketServer, you are telling the server to listen for HTTP connections on that port and to automatically upgrade them to a WebSocket connection if the request has a connection: Upgrade header.
+- when connection detected calls the server's on connection callback. Server can then send messages with the send function, and register a callback using the on message function to receive messages.
+```js
+const { WebSocketServer } = require('ws');
+
+const wss = new WebSocketServer({ port: 9900 });
+
+wss.on('connection', (ws) => {
+    ws.on('message', (data) => {
+        const msg = String.fromCharCode(...data);
+        console.log('received: %s', msg);
+        
+        ws.send(`I heard you say "${msg}"`);
+    });
+    
+    ws.send('Hello webSocket');
+})
+```
+
+### Debugging WebSocket
+- you can debug both sides of the WebSocket communication with VS code to debug the server, and Chrome to debug the client.
+- chrome's debugger has support specifically for working with Websocket communication.
+
+#### Debugging the server
+- testWebSocket and change to directory, install ws, make a file named main.js, set breakpoints on the ```ws.send``` lines so you can inspect the code, start debugging by pressing ```f5```. You may need to choose Node.js as the debugger
+
+#### Debugging the client
