@@ -1784,3 +1784,57 @@ app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
 ```
+
+### UI testing
+- TDD test driven development is proven methodology for accelerating app creation protecting against regression bugs, and demonstrating correctness. 
+- TDD for console based applications and server based code is fairly straight forward
+- web app UI code is significantly more complex to test, and using automated tests to drive your UI development is even more difficult
+- Problem is that browser required to execute UI code. means you actually have to test the app in the browser.
+- also every one of the major browsers behaves slightly differently, viewport size makes a big difference, all the code executes asynchronously, network disruptions are common, and there is a human factor
+- not testing your code doesn't work either, which means you have to manually test everything every time you make any change, or let your users test everything. not good recipe for long term success
+- Problem many strong players have been working on for decades, and solutions, while not perfect, are getting better and better.
+- options:
+  - executing automated tests in the browser
+  - testing on different browsers and devices
+
+#### Automating the browser - Playwright
+- companies that build web browsers know all difficulties of testing apps. Have to test every possible use of HTML, CSS, and JS that a user could think of.
+- no way manual testing is going to work and so early on they started putting hooks into their browsers that allowed them to be driven from automated external processes.
+- Lots of alternatives now. State of JS includes statistics on how popular these frameworks are.
+- Playwright:
+  - backed by Microsoft
+  - integrates well with VS Code
+  - runs as a Node.js process
+  - considered one of the least flaky of the testing frameworks
+- Ex of playwright:
+```HTML
+<body>
+    <p id="welcome" data-testid="msg">Hello world</p>
+    <button onclick="changeWelcome()">change welcome</button>
+    <script>
+        function changeWelcome() {
+            const welcomeEl = document.querySelector('#welcome');
+            welcomeEl.textContent = 'I feel welcomed';
+        }
+    </script>
+</body>
+```
+- installing Playwright
+  - npm init playwright@latest
+
+### Endpoint testing
+- testing services is usually easier than writing UI tests because it does not require a browser. 
+- but does still take effort to learn how to write tests that are effective of efficient
+- Making this a standard part of your development process will give you a significant advantage as you progress in your professional career
+- We are going to use Jest
+```js
+mkdir testJest
+cd testJest
+npm init -y 
+npm install express
+code .
+```
+- make a file named server.js and use express to create an application with two endpoints: one to get a store (getStore), and another to update a store
+
+#### Testing endpoints
+- to test endpoints we need another package so that we can make http requests without having to actually send them over the network. This is done with supertest

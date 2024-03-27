@@ -1,0 +1,14 @@
+{
+  "name": "cs260",
+  "version": "1.0.0",
+  "description": "#### Html deliverable - navigation tabs created for all pages - authentication page (index.html) routes to create-account.html and shop.html - shop.html includes database data (product information) and websocket data (reviews and product prices) - cart.html routes to checkout.html, which routes back to shop.html on \"place order\" - favicon.ico image added to all pages - contact us button placed in footer of all pages, routes to contact.html - changed login page to exclude other nav tabs, only route to it now is from create account and profile pages. - added kingsland logo to all pages",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.30"
+  }
+}

@@ -1,8 +1,8 @@
 window.addEventListener("load", onStart)
+
 const email = localStorage.getItem("userName");
-
-
 let products = [];
+let cartItems = [];
 
 
 async function onStart() {
@@ -13,8 +13,25 @@ async function onStart() {
         document.querySelectorAll("#add-to-cart-button").forEach((button) => {
             button.disabled = false;
         })
+        getCartItems();
     } else {
         addToCartAlert()
+    }
+}
+
+async function getCartItems() {
+    try {
+        const response = await fetch(`/api/cartItems?email=${email}`);
+        if (!response.ok) {
+            console.error('Failed to fetch cart items');
+            return [];
+        }
+        cartItems = await response.json();
+        if (cartItems.length > 0){
+            updateCartDependable();
+        }
+    } catch (error) {
+        console.error("Error getting cart items", error);
     }
 }
 
@@ -84,5 +101,10 @@ async function addToCart(productTitle) {
 
 function findProduct(productTitle) {
     return products.find(product => product.title === productTitle);
+}
+
+function updateCartDependable() {
+    const cartLogoBadgeEl = document.querySelector("#shopCartLogoBadge");
+    cartLogoBadgeEl.innerText = cartItems.length.toString();
 }
 
