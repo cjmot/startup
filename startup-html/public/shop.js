@@ -3,6 +3,8 @@ window.addEventListener("load", onStart)
 const email = localStorage.getItem("userName");
 let products = [];
 let cartItems = [];
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
 
 async function onStart() {
@@ -13,9 +15,10 @@ async function onStart() {
         document.querySelectorAll("#add-to-cart-button").forEach((button) => {
             button.disabled = false;
         })
+        configureWebSocket();
         getCartItems();
     } else {
-        addToCartAlert()
+        addToCartAlert();
     }
 }
 
@@ -92,6 +95,8 @@ async function addToCart(productTitle) {
         } else {
             console.log('Item added to cart:', product);
             alert(`Item added to cart: ${product.title}`);
+            updateCartDependable();
+            broadcastEvent(email, product.title);
         }
 
     } catch (error) {
@@ -104,7 +109,39 @@ function findProduct(productTitle) {
 }
 
 function updateCartDependable() {
+    getCartItems()
     const cartLogoBadgeEl = document.querySelector("#shopCartLogoBadge");
     cartLogoBadgeEl.innerText = cartItems.length.toString();
 }
 
+function configureWebSocket() {
+    socket.onopen = (event) => {
+        displayMsg('system', 'shop', 'connected');
+    };
+    socket.onclose = (event) => {
+        displayMsg('system', 'shop', 'disconnected');
+    };
+    socket.onmessage = async (event) => {
+        const msg = JSON.parse(await event.data.text());
+            displayMsg('user', msg.from, `added ${msg.value}`);
+
+    };
+}
+
+function displayMsg(cls, from, msg) {
+    const chatText = document.querySelector('#shopNotifications');
+    chatText.insertAdjacentHTML('afterbegin',
+        `<div class="font-semibold text-sm ">
+            <div id="${cls}"><span class="font-bold ">${from}</span> ${msg}
+            </div>  
+        </div>`
+    )
+}
+
+function broadcastEvent(from, value) {
+    const event = {
+        from: from,
+        value: value,
+    };
+    socket.send(JSON.stringify(event));
+}
