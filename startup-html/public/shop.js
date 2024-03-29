@@ -131,12 +131,13 @@ function configureWebSocket() {
 function displayMsg(cls, from, msg) {
     const chatText = document.querySelector('#shopNotifications');
     chatText.insertAdjacentHTML('afterbegin',
-        `<div class="font-semibold text-sm ">
-            <div id="${cls}"><span class="font-bold ">${from}</span> ${msg}
-            </div>  
-        </div>`
+        `<div id="${cls}" class="relative font-semibold text-xs overflow-y-auto">
+                <span class="font-bold ">${from}</span> ${msg}
+            </div>`
     )
 }
+
+
 
 function broadcastEvent(from, value) {
     const event = {
