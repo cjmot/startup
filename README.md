@@ -59,6 +59,15 @@
 - credentials: index.js
 - restricts application functionality based upon authentication: index.js, shop.js(can't add to cart without logging in)
 
+### WebSocket Deliverable
+- Deployed simon websocket deliverable
+- Added ws and peerProxy.js, and referenced it in index.js
+- added websocket function to the shop page, now all can see when others add an item to their cart.
+- backend listens for websocket connection: index.js, peerProxy.js
+- Frontend makes websocket connection: shop.js (configureWebSocket())
+- Data send over WebSocket connection: shop.js (addToCart() => broadcastEvent())
+- WebSocket data displayed in the application interface: shop.js (displayMsg())
+
 ### Kingsland
 ### Description
 Buying things online is at an all-time high. In this world of people selling whatever they want wherever they want, and sellers buying reviews of their products to put more money in their pocket, it is important to have a place where product reviews are genuine, and you can trust the opinions of others on what is being sold to you. That being said, Kingsland will be a place where you can do just that. Kingsland will allow you to connect with other people based on the reviews they wrote, and ask them personally about the product. Not only that, but the products offered are listed based on reviews and wants, there are no sponsored products or paid reviews. Everything is genuine.
