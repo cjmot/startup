@@ -1883,6 +1883,376 @@ wss.on('connection', (ws) => {
 - chrome's debugger has support specifically for working with Websocket communication.
 
 #### Debugging the server
-- testWebSocket and change to directory, install ws, make a file named main.js, set breakpoints on the ```ws.send``` lines so you can inspect the code, start debugging by pressing ```f5```. You may need to choose Node.js as the debugger
+- testWebSocket and change to directory, install ws, make a file named main.js, set breakpoints on the ```ws.send``` lines, so you can inspect the code, start debugging by pressing ```f5```. You may need to choose Node.js as the debugger
 
-#### Debugging the client
+### Security Overview
+- preventing potential for harm needs to be in the forefront of your mind whenever you create or use a webb app.
+- authorization log captures all the attempts to create a session on your server.
+- ```sudo less +G /var/log/auth.log```
+- you will see lots of other attempts with specific usernames associated with common exploits. should all be failing to connect 
+- as an experiment, someone created a test server with a user named admin with password, password, within 15 minutes, attacker had logged in, bypassed all the restrictions that were in place, and started using the server to attack other servers on the internet.
+- even for seemingly insignificant applications, security is always important
+
+#### Security Terminology
+- list of common phrases used by security community
+  - Hacking - process of making a system do something it's not supposed to do.
+  - Exploit - code or input that takes advantage of a programming or configuration flaw
+  - Attack Vector - method hacker employs to penetrate and exploit a system
+  - Attack Surface - the exposed parts of a system that an attacker can access. ex. open ports (22, 443, 80), service endpoints, or user accounts
+  - Attack Payload - actual code, or data, that a hacker delivers to a system in order to exploit it.
+  - Input sanitization - "Cleaning" any input of potentially malicious data
+  - Black Box testing - Testing an application without knowledge of the internals of the app
+  - White box testing - testing an app with knowledge of teh source code and internal infrastructure
+  - Penetration testing - Attempting to gain access to, or exploit, a system in ways that are not anticipated by the developers.
+  - Mitigation - action taken to remove, or reduce, a threat.
+
+#### Motivation for attackers
+- common motivations 
+  - Disruption - by overloading a system, encrypting essential data, or deleting critical infrastructure, an attacker can destroy normal business operations
+    - may be an attempt at extortion, or simply be an attempt to punish a business that that attacker does not agree with
+  - Data exfil - privately extracting or exposing system's data, attacker can embarrass company, exploit insider info, sell info to competitors, or leverage info for additional attacks
+  - Resource consumption
+    - by taking control of a company's computing resources, an attacker can use it for other purposes such as mining cryptocurrency, gathering customer info, or attacking other systems
+
+#### Examples of security failures
+- security should always be a primary objective of any app. Building a web app that looks good and performs well is a lot less important than building an app that is secure
+
+#### Common hacking techniques
+- a few common exploitation techniques that you should be aware of
+  - Injection - when an app interacts with a database on the backend, a programmer will often take user input and concatenate it directly into a search query
+    - allows hacker to use a specially crafted query to make the database reveal hidden info or even delete database
+  - Cross site scripting (XSS) - category of attacks where an attacker can make malicious code execute on a different user's browser. If successful, attacker can turn a website that a user trusts into one that can steal passwords and hijack a user's account
+  - Denial of Service - includes attacks where main goal is to render service inaccessible
+    - done by deleting database using SQL injection, sending unexpected data to service endpoint that causes program to crash, or simply making more requests than a server can handle
+  - Credential Stuffing - if hacker has user's credentials from previous website attack, there is good chance that they can successfully use those creds on a different website. 
+    - hacker can also try to brute force attack a system by trying every possible combination of password
+  - Social engineering - appealing to human's desire to help, in order to gain unauthorized access or info
+
+#### What can I do about it?
+- taking time to learn techniques a hacker uses to attack a system is the first step in preventing them from exploiting your systems. 
+- develop a security mindset, where you always assume any attack surface will be used against you. 
+  - Sanitize input data - always assume that any data you receive from outside your system will be used to exploit your system. 
+    - if the input data can be turned into an executable expression ,or can overload computing, bandwidth, or storage resources.
+  - Logging - not possible to think of every way that your system can be exploited, but you can create an immutable log of requests that will expose when a system is being exploited.
+    - you can then trigger alerts, and periodically review the logs for unexpected activity
+  - Traps - create what appears to be valuable info and then trigger alarms when the data is accessed
+  - Educate - teach yourself, users, and everyone you work with, to be security minded. Anyone who has access to your system should understand how to prevent physical, social, and software attacks
+  - Reduce attack surfaces - do not open access anymore than is necessary to properly provide your app. includes what network ports are open, what account privileges are allowed, where you can access the system from, and what endpoints are available
+  - Layered security
+  - least required access policy - don't give any one user all the credentials necessary to control the entire system
+  - Safeguard credentials
+  - public review
+
+### OWASP 
+- Open Web Application Security Project is non-profit research entity that manages top ten list of the most important web application security risks. Understanding, and periodically reviewing list will help to keep your web apps secure
+
+#### A01 Broken Access Control
+- occurs when app doesn't properly enforce permissions on users. could mean that a non admin user can do things that only admin should be able to do, or admin accounts are improperly secured.
+  - mitigations:
+    - strict access enforcement at the service level 
+    - clearly defined roles and elevation paths
+#### A02 Cryptographic Failures
+- occur when sensitive data is accessible eiter without encryption, with weak encryption protocols, or when cryptographic protections are ignored. 
+- Sending any unencrypted data over a public network connection allows an attacker to capture the data. Even private, internal, network connections, or data that is stored without encryption, is susceptible to exploitation once attacker gains access to internal system
+- ex of ineffective cryptographic methods include hashing algorithms like MD5 and SHA-1 that are trivial to crack with modern hardware and tools
+- another failure happens when apps do not validate the provided web certificate when establishing a network connection. case of falsely assuming that if the protocol is secure then the entity represented by the protocol is acceptable.
+- mitigations:
+  - use strong encryption for all data. includes external, internal, in transit, and at rest data
+  - updating encryption algorithms as older algorithms become compromised.
+  - Properly using cryptographic safeguards
+
+#### A03 Injection
+- occur when attacker allowed to supply data that is then injected into a context where it violates the expected use of the user input. 
+- ex. input field that is only expected to contain a user's password. Instead, attacker supplies SQL database command in the password input.
+- mitigations
+  - sanitizing input
+  - use database prepared statements
+  - restricting execution rights
+  - limit output
+#### A04 Insecure design
+- broadly refers to architectural flaws that are unique for individual systems, rather than implementation errors.
+- happens either when app team doesn't focus on security when designing system, or doesn't continuously reevaluate the app security
+- based on unexpected uses of the business logic that controls the functionality of the app. ex. if app allows for trial accounts to be easily created, then attacker could create a denial of service attack by creating millions of accounts and utilizing the maximum allowable usage
+- mitigations:
+  - integration testing
+  - strict access control
+  - security education
+  - security design pattern usages
+  - scenario reviews
+
+#### A05 Security Misconfiguration
+- exploit the config of an app.
+- ex. using default passwords, not updating software, exposing config settings, or enabling unsecured remote config.
+- mitigations:
+  - config reviews
+  - setting defaults to disable all access
+  - automated config audits
+  - requiring multiple layers of access for remote configs.
+#### A06 Vulnerable and Outdated Components
+- the longer an app has been deployed, more likely it is that the attack surface, and corresponding exploits of the app will increase. 
+- due to the cost of maintaining an app and keeping it up to date in order to mitigate newly discovered exploits
+- mitigations
+  - keeping a manifest of your software stack including versions
+  - reviewing security bulletins
+  - regularly updating software
+  - required components to be up-to-date
+  - replacing unsupported hardware
+#### A07 Identification and Authentication failures
+- identification and auth failures include any situation where user's identity can be impersonated or assumed by an attacker
+- ex allowed repeated attempts to guess a user's password
+- another ex of identification failure would be a weak password recovery process that doesn't properly verify the user.
+- mitigations:
+  - rate limiting requests
+  - properly managing credentials
+  - multifactor auth
+  - auth recovery
+#### A08 Software and data integrity failure
+- represent attacks that allow external software, processes, or data to compromise your app
+- modern web apps extensively use open source and commercially produced packages to provide key functionality. Using these packages without security audit gives them unknown amount of control over your app.
+- mitigations
+  - only using trusted package repos
+  - using your own private vetted repo
+  - audit all updates to third party packages and data sources
+#### A09 Security logging and monitoring failures
+- one of the first things an attacker will do after penetrating your app is delete or alter any logs that might reveal the attacker's presence. 
+- secure system will store logs that are accessible, immutable and contain adequate info to detect intrusion, and conduct post-mortem analysis
+- mitigations
+  - real time log processing
+  - automated alerts for metric threshold violations
+  - periodic log reviews
+  - visual dashboards for key indicators
+#### A10 Server Side Request Forgery (SSRF)
+- causes app service to make unintended internal requests, that utilized the service's elevated privileges, in order to expose internal data or services
+- Mitigations
+  - sanitizing returned data
+  - not returning data
+  - whitelisting accessible domains
+  - rejecting HTTP redirects
+
+### Security practice
+- you will not really internalize how security exploits work until you get some practice with them. One way is to use a practice security web app. lots of practice apps but two are Gruyere and Juice Shop
+
+#### Gruyere
+- provides tutorials and practice with things like cross-site scripting (XSS), Denial of Service (DoS), SQL injection, and elevation of privilege attacks
+- easy to start, play with, and reset when you want to start over
+
+#### Juice Shop
+- OWASP provides security training app called Juice Shop. you need to download the code and run it locally, but you have full control.
+
+### Web Frameworks
+- seek to make the job of writing web apps easier by providing tools for completing common app tasks, this includes things like modularizing code, creating single page apps, simplifying reactivity, and supporting diverse hardware devices.
+- each framework has advantages and disadvantages. Some are very opinionated about how to do things, some have major institutional backing, others have a strong open source community.
+
+#### Hello World examples
+- Vue - combines HTML, css, and JS into a single file. HTML is represented by a template element that can be aggregated into other templates
+- SFC
+```js
+<script>
+    export default {
+        data() {
+            return {
+                name: 'world',
+            };
+        ;}
+    };
+</script>
+
+<style>
+    P {
+        color: green;
+    }
+</style>
+
+<template>
+    <p>Hellow {{ name }}!</p>
+</template>
+```
+- Svelt - combines HTML, CSS, and JS into single file. but requires a transpiler to generate browser-ready code, instead of a runtime virtual DOM
+```html
+<script >
+    let name = 'world';
+</script>
+
+<
+<style>
+    P {
+        color: green;
+    }
+</style>
+
+<p>Hello {name}!</p>
+```
+- React - combines JS and HTML into component element, CSS must be declared outside the JSX file.
+- component itself highly leverages the functionality of JS and can be represented as a function or class
+```js
+import 'hello.css';
+
+const Hello = () => {
+    let name = 'world';
+    
+    return <p>Hello {name}</p>;
+};
+```
+CSS
+```js
+p {
+    color: green;  
+}
+```
+- Angular - component defines what JS, HTML, and CSS are combined together. keeps strong separation of files that are usually grouped together in a directory rather than using the single file representation
+JS
+```js
+@Component({
+    selector: 'app-hello-world',
+    templateUrl: './hello-world.component.html',
+    styleUrls: ['./hello-world.component.css'],
+})
+export class HelloWorldComponent {
+    name: string;
+    constructor() {
+        this.name = 'world';
+    }
+}
+```
+HTML
+```html
+<p>hello {{name}}</p>
+```
+CSS
+```js
+p {
+    color: green;
+}
+```
+
+### React
+- provide a powerful web programming framework
+- name comes from its focus on making reactive web page components that automatically update based on user interactions in teh underlying data
+- created by Jordan Walke for use at Facebook in 2011. used as main framework for instagram
+- abstracts HTML into a JS variant called JSX. JSX is converted into valid HTML and JS using a preprocessor called Babel. 
+```jsx
+const i = 3;
+const list = (
+    <ol class='big'>
+        <li>Item {i}</li>
+        <li>Item {3+i}</li>
+    </ol>
+);
+```
+Babel will convert that into valid JS
+```js
+const i = 3;
+const list = React.createElement(
+    'ol',
+    { class: 'big'},
+    React.createElement('li', null, 'Item ', i),
+    React.createElement('li', null, 'Item ', 3+i)
+);
+```
+- the ```React.createElement``` function will generate DOM elements and monitor the data they represent for changes. When change is discovered, React will trigger dependent changes.
+
+### Components
+- react allows you to modularize the functionality of your app. This allows underlying code to directly represent the components that a user interacts with. also enables code reuse as common app components often show up repeatedly.
+#### Render function
+- primary purposes of a component is to generate the user interface. this is done with the component's render function
+- whatever is returned from render function is inserted into the component HTML element
+- ex. JSX file containing react component element named Demo would cause react to load the demo component, call the render function, and insert the result into the place of the demo element
+jsx
+```jsx
+<div>
+    Component: <Demo />
+</div>
+```
+- Demo is not a valid HTML element. Transpiler will replace tag with the resulting rendered HTML
+React Component
+```jsx
+function Demo() {
+    const who = 'world';
+    return <b>Hello {who}</b>;
+}
+```
+resulting HTML
+```html
+<div>Component: <b>Hello world</b></div>
+```
+#### Properties
+- components also allow you to pass info to them in the form of element properties. c
+- component receives the properties in its constructor and then can display them when it renders.
+```jsx
+<div>Component: <Demo who="Walke" /></div>
+```
+```jsx
+function Demo(props) {
+    return <b>Hello {props.who}</b>;
+}
+```
+```html
+<div>Component: <b>Hello Walke</b></div>
+```
+#### State
+- component can have internal state. state is created by calling the React.useState hook function. the UseState function returns a variable that contains the current state and a function to update the state.
+```jsx
+const Clicker = () => {
+    const [clicked, updateClicked] = React.useState(false);
+    
+    const onClicked = (e) => {
+        updateClicked(!clicked);
+    };
+    
+    return <p onClick={(e) => onClicked(e)}>clicked: {`${clicked}`}</p>;
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Clicker />);
+```
+you can use JSX even without a function. simple variable representing JSX will work anyplace you would otherwise provide a component
+
+#### Class style components
+- react also supports class style components, but don't use them, react team is moving away from that. but be aware of syntax
+#### Reactivity
+- component's properties and state are used by the React framework to determine the reactivity of the interface. Reactivity controls how a component reacts to actions taken by the user or events that happen within the app. 
+- Whenever a component's state or properties change, the render function for the component and all of its dependent component render functions are called.
+
+### Toolchains
+- as web programming becomes more and more complex it became necessary to abstract away some of that complexity with a series of tools. 
+- common functional pieces in a web app tool chain include
+  - Code repo - stores code in shared, versioned, location
+  - Linter - Removes, or warns of non-idiomatic code usage
+  - Prettier - Formats code according to a shared standard
+  - Transpiler - compiles code into a different format. ex. JSX to JS, TypeScript to JS, or SCSS to CSS
+  - Polyfill - Generates backward compatible code for supporting old browser versions that do not support the latest standards
+  - Bundler - Packages code into bundles for delivery to the browser. Enables compatibility (ex with ES6 module support), or performance (with lazy loading)
+  - Minifier - Removes whitespace and renames variables in order to make code smaller and more efficient to deploy
+  - Testing - Automated tests at multiple levels to ensure correctness
+  - Deployment - Automated packaging and delivery of code from the development environment to the production environment
+- We will use:
+  - Github - code repo
+  - Vite - jsx
+  - TS - development and debugging support
+  - ESBuilding - converting to ES6 modules and transpiling(with babel underneath)
+  - Rollup - bundling and tree shaking
+  - PostCSS for css transpiling
+  - and a simple bash script for deployment
+- you don't have to completely understand what each of these pieces in the chain are accomplishing, but the more you know about them the more you can optimize your development efforts
+
+### Vite
+- common way to configure your project is to use a CLI to initially set up a web app.
+  - saves you the trouble of configuring the toolchain parameters and gets you quickly started with a default app
+- our toolchain will use vite
+  - bundles code quickly, has great debugging support, and allows you to easily support JSX, TypeScript, and different CSS flavors.
+```
+npm create vite@latest demoVite -- --template react
+cd demoVite
+npm install
+npm run dev
+```
+
+### Router
+- router provides essential functionality for single-page apps.
+- with multiple-webpage app the headers, footers, nav, and common components must be either duplicated in each HTML page, or injected before the server sends the page to the browser
+- with single page apps, browser only loads one HTML page and then JS is used to manipulate the DOM and give it the appearance of multiple pages.
+- router defines the routes a user can take through 5the app, and automatically manipulates the DOM to display the appropriate framework components.
+- we will use react-router-dom v6.
+  - simplified routing functionality of react-router-dom derives from the project react-router for its core functionality. don't confuse the two, or versions of react-router-dom before version 6 when reading tutorials and stuff
+- whole thing consists of BrowserRouter component that encapsulates the entire app and controls the routing action. Link, or NavLink, component captures user nav events and modifies what is rendered by the Routes component by matching up the to and path attributes.
+- 
