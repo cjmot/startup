@@ -2255,4 +2255,121 @@ npm run dev
 - we will use react-router-dom v6.
   - simplified routing functionality of react-router-dom derives from the project react-router for its core functionality. don't confuse the two, or versions of react-router-dom before version 6 when reading tutorials and stuff
 - whole thing consists of BrowserRouter component that encapsulates the entire app and controls the routing action. Link, or NavLink, component captures user nav events and modifies what is rendered by the Routes component by matching up the to and path attributes.
-- 
+
+### Reactivity
+- making the UI react to changes in user input or data is one of the architectural foundations of React.
+- React enables reactivity with three major pieces of a React component:
+  - props, state, and render
+- when JSX is rendered, React parses JSX and creates list of any references to component's state or prop objects
+- then monitors those objects and if it detects that they have changed it will call the component's render function so that the impact of the change is visualized.
+- following ix contains two components: parent <Survey/> component and a child <Question/> component. 
+  - survey has state named color. question has prop named answer. Survey passes its color state to the question as a prop. means that any change to the survey's color will also be reflected in the question's color. powerful means for a parent to control a child's functionality.
+- be careful about assumptions of when state is updated. just because you called updateState does not mean that you can access the updated state on the next line of code. happens asynchronously, and you never really know what is going to happen.
+```jsx
+const Survey = () => {
+    const [color, updateColor] = React.useState('#737AB0');
+    
+    // When the color changes update the state
+    const onChange = (e) => {
+        updateColor(e.target.value);
+    };
+    
+    return (
+        <div>
+            <h1>Survey</h1>
+
+            {/* Pass the survey color as a parameter to the Question.
+                When the color changes the Question parameter will also be updated and rendered. */}
+            <Question answer={color} />
+            
+            <p>
+                <span>Pick a color: </span>
+                {/* Set the Survey color state as the value of the color picker.
+                    When the color changes, the value will also be updated and rendered. */}
+                <input type='color' onChange={(e) => onChange(e)} value={color} />
+            </p>
+        </div>
+    );
+};
+
+// The Question component
+const Question = ({ answer }) => {
+    return (
+        <div>
+            {/* Answer rerendered whenever the parameter changes */}
+            <p>Your answer: {answer}</p>
+        </div>
+    );
+};
+
+ReactDOM.render(<Survey />, document.getElementById('root'));
+```
+
+### React hooks
+- allow React function style components to be able to do  everything that a class style component can do and more.
+- as new features are added to React they are including them as hooks.
+- makes function style components the preferred way of doing things in React
+
+#### useEffect hook
+- allows you to represent lifecycle events
+- ex run a function every time the component completes rendering:
+```jsx
+function UseEffectHookDemo() {
+    React.useEffect(() => {
+        console.log('rendered');
+    });
+    
+    return <div>useEffectExample</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+- you can also take action when the component cleans up by returning a cleanup function from the function registered with useEffect.
+- ex. every time the component is clicked the state changes and so the component is re-rendered. causes both cleanup function to be called in addition to hook function. If function not re-rendered then only cleanup function would be called
+```jsx
+function UseEffectHookDemo() {
+    const [count, updateCount] = React.useState(0);
+    React.useEffect(() => {
+        console.log('rendered');
+        
+        return function cleanup() {
+            console.log('cleanup');
+        };
+    });
+    
+    return <div onClick={() => updateCount(count+1)}>useEffectExample {count}</div>;
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+- useful when you want to create side effects for things such as tracking when a component is displayed or hidden, or creating and disposing of resources.
+
+#### Hook Dependencies
+- you can control what triggers a useEffect hook by specifying its dependencies.
+- ex. two state variables, but only want the useEffect hook to be called when the component is initially called and when the first variable is clicked.
+- pass an array of dependencies as a second parameter to the useEffect call.
+```jsx
+function UseEffectHookDemo() {
+    const [count1, updateCount1] = React.useState(0);
+    const [count2, updateCount2] = React.useState(0);
+    
+    React.useEffect(() => {
+        console.log(`count1 effect triggered ${count1}`);
+    }, [count1]);
+    
+    return (
+        <ol>
+            <li onClick={() => updateCount1(count1 + 1)}>Item 1 - {count1}</li>
+            <li onClick={() => updateCount2(count2 + 1)}>Item 2 - {count2}</li>
+        </ol>
+    );
+}
+
+ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
+```
+- specifying an empty array as the hook dependency then it is only called when the component is first rendered
+- hooks can only be used in function style components and must be called at the top scope of the function. 
+- hook cannot be called inside of a loop or conditional. restriction ensures that hooks are always called in the same order when a component is rendered.
+
+### Simon React
+- I wish we started with React, transitioning everything is going to be VERY complicated.
