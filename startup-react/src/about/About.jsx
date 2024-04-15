@@ -1,8 +1,6 @@
 import React from 'react';
-import { getCartItems } from "../getCartItems";
 
 export function About(email) {
-    getCartItems(email)
     return (
         <main className="flex-auto h-screen flex flex-col justify-center p-20">
             <div className="flex-none self-center text-4xl">Founders</div>

@@ -1,4 +1,4 @@
-export async function getCartItems(email) {
+export default async function getCartItems(email) {
     try {
         const response = await fetch(`/api/cartItems?email=${email}`);
         if (!response.ok) {
@@ -7,14 +7,11 @@ export async function getCartItems(email) {
         }
         const cartItems = await response.json();
         if (cartItems.length > 0){
-            updateCartDependable(cartItems.length);
+            return cartItems;
+        } else {
+            return [];
         }
     } catch (error) {
         console.error("Error getting cart items", error);
     }
-}
-
-function updateCartDependable(cartItemsLength) {
-    const cartLogoBadgeEl = document.querySelector("#aboutCartLogoBadge");
-    cartLogoBadgeEl.innerText = cartItemsLength.toString();
 }

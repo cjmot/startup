@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginUser } from "./loginUser";
-import {Shop} from "../shop/Shop";
 
 export function Login({ setUserName, setLoggedIn }) {
     const [username, setUsername] = useState('');
@@ -25,7 +24,6 @@ export function Login({ setUserName, setLoggedIn }) {
             setUserName(email);
             navigate('/shop');
         } else {
-            // Handle login failure (e.g., display error message)
             alert('Login failed. Please check your credentials and try again.');
         }
     }
