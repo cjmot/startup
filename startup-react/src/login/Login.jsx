@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginUser } from "./loginUser";
 
-export function Login({ setUserName, setLoggedIn }) {
+export function Login({ onAuthChange }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -10,18 +10,16 @@ export function Login({ setUserName, setLoggedIn }) {
     const email = localStorage.getItem('userName');
     React.useEffect(() => {
         if (email) {
-            setLoggedIn();
-            setUserName(email);
+            onAuthChange();
             navigate('/shop');
+
         }
     })
 
     async function handleLogin() {
-        const response = loginUser(username, password);
+        const response = await loginUser(username, password);
         if (response) {
-            const email = localStorage.getItem('userName');
-            setLoggedIn();
-            setUserName(email);
+            onAuthChange();
             navigate('/shop');
         } else {
             alert('Login failed. Please check your credentials and try again.');

@@ -37,6 +37,7 @@ export default function Products(props) {
                             cost={item.cost}
                             loggedIn={props.loggedIn}
                             products={products}
+                            setCartLength={props.setCartLength}
                         />
                 )
             }

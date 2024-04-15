@@ -26,7 +26,7 @@ export function Shop( props ) {
                     <hr/>
                 </div>
                 <div id="products" className="overflow-y-auto max-h-full mt-4 flex flex-row flex-wrap">
-                    <Products loggedIn={props.loggedIn}/>
+                    <Products loggedIn={props.loggedIn} setCartLength={props.setCartLength} />
                 </div>
             </section>
         </main>

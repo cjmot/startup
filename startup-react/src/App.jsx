@@ -16,41 +16,22 @@ export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const [cartLength, setCartLength] = useState(0);
+    const handleLoginUpdate = () => {
+        const email = localStorage.getItem('userName');
+        if (email) {
+            setUserName(email);
+            setLoggedIn(true);
+            console.log('handleLoginUpdate called');
+            getCartItems(email)
+                .then(cartItems => setCartLength(cartItems.length))
+                .catch(error => console.error('Error fetching cart items:', error));
+        }
+    };
 
     React.useEffect(() => {
-        const email = localStorage.getItem('userName');
-        if (email) {setLoggedIn(true);}
-        if (loggedIn){
-            setUserName(email);
-            getCartItems(email)
-                .then(cartItems => {
-                    if (cartItems.length > 0){
-                        setCartLength(cartItems.length);
-                    }
-                })
-                .catch(error => console.log(error)
-                );
-        }
+        handleLoginUpdate();
+    }, [loggedIn, userName]);
 
-    }, [loggedIn]);
-
-    useEffect(() => {
-        const handleCartUpdated = () => {
-            // Update cart length when cart is updated
-            const email = localStorage.getItem('userName');
-            getCartItems(email)
-                .then((cartItems) => {
-                    if (cartItems.length > 0) {
-                        setCartLength(cartItems.length);
-                    }
-                })
-                .catch((error) => console.log(error));
-        };
-
-        window.addEventListener('cartUpdated', handleCartUpdated);
-
-        return () => {window.removeEventListener('cartUpdated', handleCartUpdated);}
-    }, );
 
     return (
         <BrowserRouter>
@@ -78,13 +59,13 @@ export default function App() {
 
                 <main className='flex overflow-hidden flex-col h-full' >
                     <Routes>
-                        <Route path='/' element={<Login setUserName={(userName) => setUserName(userName)} setLoggedIn={() => setLoggedIn(true)} />}/>
+                        <Route path='/' element={<Login onAuthChange={handleLoginUpdate} />}/>
                         <Route path='/login' element={<Login setUserName={(userName) => setUserName(userName)} setLoggedIn={() => setLoggedIn(true)} />}/>
                         <Route path='/create_account' element={<CreateAccount loggedIn={loggedIn} />}/>
                         <Route path='/about' element={<About loggedIn={loggedIn} />}/>
                         <Route path='/cart' element={<Cart loggedIn={loggedIn} />}/>
                         <Route path='/checkout' element={<Checkout loggedIn={loggedIn} />}/>
-                        <Route path='/shop' element={<Shop loggedIn={loggedIn} />}/>
+                        <Route path='/shop' element={<Shop loggedIn={loggedIn} setCartLength={setCartLength} />}/>
                         <Route path='/profile' element={<Profile loggedIn={loggedIn} />}/>
                         <Route path='*' element={<NotFound loggedIn={loggedIn} />}/>
                     </Routes>
@@ -104,6 +85,5 @@ export default function App() {
 
 
 function NotFound() {
-    return <main className='justify-center items-center h-full flex flex-col'>404: Return to sender. Address
-        unknown</main>
+    return <main className='justify-center items-center h-full flex flex-col'>404: Return to sender. Address unknown</main>
 }

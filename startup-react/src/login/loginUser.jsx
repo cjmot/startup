@@ -12,9 +12,11 @@ export async function loginUser(userName, password) {
         if (response.ok) {
             localStorage.setItem('userName', userName);
             console.log(userName);
+            return true;
         } else {
             const body = await response.json();
-            alert(body.msg);
+            console.error(body.msg);
+            return false;
         }
     } catch (error) {
         console.error("Error logging in:", error);

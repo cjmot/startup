@@ -3,9 +3,11 @@ import addToCart from "./addToCart";
 
 export default function Product( props ) {
     async function addToCartHandler(){
-        addToCart(props.title, props.products).then((product) => console.log(product));
-        const event = new Event('cartUpdated');
-        window.dispatchEvent(event);
+        addToCart(props.title, props.products)
+            .then((products) => {
+                console.log(products);
+                props.setCartLength(products.length);
+            });
     }
 
 
