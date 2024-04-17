@@ -1,16 +1,19 @@
 import React from 'react';
 import addToCart from './addToCart';
+import { CartEvent, CartNotifier } from '../cartNotifications/cartNotifier';
 
 export default function Product({ title, image, cost, loggedIn, setCartLength, products }) {
     async function addToCartHandler() {
         if (loggedIn) {
             try {
+                const email = localStorage.getItem('userName');
                 console.log('Adding to cart');
                 const updatedCart = await addToCart(title, products);
                 if (updatedCart && updatedCart.length > 0) {
                     setCartLength(updatedCart.length);
                     console.log('Added to cart');
-                    alert("Item added to cart");
+                    CartNotifier.broadcastEvent(email, CartEvent.cartUpdate, title)
+                    alert(`${title} added to cart`);
                 } else {
                     console.error('Product.jsx.addToCartHandler: error with addToCart');
                 }

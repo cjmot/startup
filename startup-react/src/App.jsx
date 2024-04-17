@@ -10,6 +10,8 @@ import { Shop } from "./shop/Shop";
 import { Profile } from "./profile/Profile";
 import { Checkout } from "./checkout/Checkout";
 
+import { CartNotifications } from "./cartNotifications/CartNotifications";
+
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("userName"));
     const [userName, setUserName] = useState(localStorage.getItem("userName") || '');
@@ -29,11 +31,13 @@ export default function App() {
         setLoggedIn(false);
     }
 
+
+
     return (
         <BrowserRouter>
             <div className="overflow-hidden flex flex-col m-0 h-screen font-sans text-gray-700">
                 <header className="relative flex-none h-20 max-w-full flex flex-col justify-center items-center m-4">
-                    <div id="shopNotifications" className="overflow-y-auto h-full absolute top-0 left-0 w-1/4"></div>
+                    <CartNotifications loggedIn={loggedIn} />
                     <img src="../images/kingslandlogo_wordmark-blue.png" alt="../images/favicon.ico" className="w-52"/>
                     <nav id="navbar" className="self-end flex-none flex flex-row items-center space-x-4 text-xl">
 
