@@ -40,7 +40,6 @@ export function Cart(props) {
         if (updatedCart) {
             setCartItems(updatedCart);
             props.setCartLength(updatedCart.length);
-            console.log(props.cartLength);
             if (updatedCart.length === 0) {
                 setIsEmpty(true);
             }

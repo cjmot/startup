@@ -2,7 +2,9 @@ import React from 'react';
 
 export default function CartItem(props) {
     async function handleDeleteItem() {
+        console.log('Removing from cart');
         await props.onDelete(props.item.id);
+        console.log('Removed from cart');
         alert('Item was removed successfully.');
     }
 

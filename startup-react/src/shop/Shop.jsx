@@ -14,7 +14,6 @@ export function Shop(props) {
                 if (prevCartLength !== items.length) {
                     props.setCartLength(items.length);
                     setPrevCartLength(items.length);
-                    console.log('fetchCartItems called, cart:', items);
                 }
             } catch (error) {
                 console.error('Error fetching cart items:', error);
@@ -24,13 +23,16 @@ export function Shop(props) {
 
     useEffect(() => {
         fetchCartItems().catch(console.error);
+        if (props.loggedIn){
+            props.setUserName(localStorage.getItem('userName'));
+        }
     }, [props.cartLength]);
 
     return (
         <main className="overflow-y-auto flex-none h-full flex flex-col">
-            <NavLink className="text-lg p-5 underline underline-offset-4 hover:font-bold" to={'/'}>
+            {!props.loggedIn && <NavLink className="text-lg p-5 underline underline-offset-4 hover:font-bold" to={'/'}>
                 Back to Login
-            </NavLink>
+            </NavLink>}
             <div className="text-5xl self-center pt-5 font-medium font-serif">Kingsland Store</div>
             <p className="text-xl self-center"></p>
             <section className="overflow-y-auto flex-1 h-full w-screen min-w-fit max-w-4 flex flex-row">

@@ -12,7 +12,7 @@ import { Checkout } from "./checkout/Checkout";
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("userName"));
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] = useState(localStorage.getItem("userName") || '');
     const [cartLength, setCartLength] = useState(0);
 
     function handleLogin(userName) {
@@ -60,7 +60,7 @@ export default function App() {
                         <Route path='/about' element={<About loggedIn={loggedIn} />}/>
                         <Route path='/cart' element={<Cart loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/checkout' element={<Checkout loggedIn={loggedIn} />}/>
-                        <Route path='/shop' element={<Shop loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
+                        <Route path='/shop' element={<Shop loggedIn={loggedIn} setUserName={() => setUserName} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/profile' element={<Profile loggedIn={loggedIn} />}/>
                         <Route path='*' element={<NotFound loggedIn={loggedIn} />}/>
                     </Routes>

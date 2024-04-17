@@ -9,7 +9,6 @@ export default async function getCartItems(email) {
         if (cartItems.length > 0){
             return cartItems;
         } else {
-            console.log(cartItems)
             return [];
         }
     } catch (error) {
