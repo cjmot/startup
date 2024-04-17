@@ -7,18 +7,19 @@ export function Login({ onAuthChange }) {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    async function handleLoginUpdate() {
+    function handleLoginUpdate() {
         const email = localStorage.getItem('userName');
         if (email) {
             onAuthChange(email);
-            console.log('handleLoginUpdate called');
         }
     }
 
     async function handleLogin() {
+        console.log('Logging in');
         const response = await loginUser(username, password);
         if (response) {
-            await handleLoginUpdate().catch(console.error);
+            handleLoginUpdate();
+            console.log('Logged in')
             navigate('/shop');
         } else {
             alert('Login failed. Please check your credentials and try again.');

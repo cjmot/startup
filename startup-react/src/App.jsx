@@ -24,6 +24,10 @@ export default function App() {
             setCartLength(length);
         }
     }
+    function handleLogout() {
+        setUserName('');
+        setLoggedIn(false);
+    }
 
     return (
         <BrowserRouter>
@@ -32,22 +36,26 @@ export default function App() {
                     <div id="shopNotifications" className="overflow-y-auto h-full absolute top-0 left-0 w-1/4"></div>
                     <img src="../images/kingslandlogo_wordmark-blue.png" alt="../images/favicon.ico" className="w-52"/>
                     <nav id="navbar" className="self-end flex-none flex flex-row items-center space-x-4 text-xl">
-                        <NavLink className="flex items-center" to="/shop">
-                            <span className="material-symbols-outlined">shopping_bag</span>
-                        </NavLink>
+
                         {loggedIn &&
-                            <NavLink className="flex items-center relative disabled:text-gray-400" to="/cart">
-                                <span className="material-symbols-outlined">shopping_cart</span>
+                            <>
+                                <NavLink className="flex items-center" to="/shop">
+                                    <span className="material-symbols-outlined">shopping_bag</span>
+                                </NavLink>
+                                <NavLink className="flex items-center relative disabled:text-gray-400" to="/cart">
+                                    <span className="material-symbols-outlined">shopping_cart</span>
                                     {cartLength > 0 &&
                                         <span id="shopCartLogoBadge"
                                               className="text-sm flex w-5 h-5 p-2 bg-red-400 justify-center items-center rounded-full absolute top-1/2 -right-2"
                                         >{cartLength}</span>}
-                            </NavLink>
+                                </NavLink>
+                                <NavLink className="flex items-center" to="/profile">
+                                    <span className="material-symbols-outlined">person</span>
+                                    <span id="shopUser" className="text-sm font-semibold text-center">{userName}</span>
+                                </NavLink>
+                            </>
                         }
-                        <NavLink className="flex items-center" to="/profile">
-                            <span className="material-symbols-outlined">person</span>
-                            <span id="shopUser" className="text-sm font-semibold text-center">{userName}</span>
-                        </NavLink>
+
                     </nav>
                 </header>
                 <hr/>
@@ -61,7 +69,7 @@ export default function App() {
                         <Route path='/cart' element={<Cart loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/checkout' element={<Checkout loggedIn={loggedIn} />}/>
                         <Route path='/shop' element={<Shop loggedIn={loggedIn} setUserName={() => setUserName} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
-                        <Route path='/profile' element={<Profile loggedIn={loggedIn} />}/>
+                        <Route path='/profile' element={<Profile loggedIn={loggedIn} onLogout={handleLogout}/>}/>
                         <Route path='*' element={<NotFound loggedIn={loggedIn} />}/>
                     </Routes>
                 </main>

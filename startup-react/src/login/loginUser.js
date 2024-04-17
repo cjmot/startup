@@ -7,11 +7,9 @@ export async function loginUser(userName, password) {
             body: reqBody,
             headers: {'Content-type': 'application/json; charset=UTF-8',},
         });
-        console.log(response);
 
         if (response.ok) {
             localStorage.setItem('userName', userName);
-            console.log(userName);
             return true;
         } else {
             const body = await response.json();
