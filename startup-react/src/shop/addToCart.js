@@ -9,11 +9,12 @@ export default async function addToCart(productTitle, products) {
         });
         if (!response.ok) {
             console.log('Failed to add item to cart');
+            return [];
         } else {
-            console.log('Item added to cart:', product);
-            alert(`Item added to cart: ${product.title}`);
-            return response.json();
-            // broadcastEvent(email, product.title);
+            const cart = await response.json();
+            console.log(cart)
+            return cart;
+            // broadcastEvent(email, product.title);}
         }
 
     } catch (error) {

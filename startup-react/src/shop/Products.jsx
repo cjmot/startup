@@ -1,46 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Product from './Product';
 import getProducts from './getProducts';
 
-export default function Products(props) {
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [productComponents, setProductComponents] = React.useState([]);
-    const [products, setProducts] = React.useState([]);
+export default function Products({ loggedIn, setCartLength }) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [products, setProducts] = useState([]);
 
-
-    React.useEffect(() => {
-
-        getProducts()
-            .then(response => {
-                let productProps = []
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                const response = await getProducts();
                 setProducts(response);
-                for (let item of response) {
-                    productProps.push({ id: item.id, title: item.title, image: item.image, cost: item.price });
-                }
-                setProductComponents(productProps)
                 setIsLoading(false);
-            })
-            .catch(error => console.log(error));
-    }, [])
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
 
+        fetchProducts();
+    }, []);
 
     return (
         <>
             {isLoading && <main><p>Loading ...</p></main>}
-            {productComponents &&
-                productComponents.map(
-                    (item) =>
-                        <Product
-                            key={item.id}
-                            title={item.title}
-                            image={item.image}
-                            cost={item.cost}
-                            loggedIn={props.loggedIn}
-                            products={products}
-                            setCartLength={props.setCartLength}
-                        />
-                )
-            }
+            {!isLoading && products.map(product => (
+                <Product
+                    key={product.id}
+                    title={product.title}
+                    image={product.image}
+                    cost={product.price}
+                    products={products}
+                    loggedIn={loggedIn}
+                    setCartLength={setCartLength}
+                />
+            ))}
         </>
-    )
+    );
 }

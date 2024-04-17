@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {BrowserRouter, NavLink, Route, Routes, useNavigate} from 'react-router-dom';
 
 import { Login } from "./login/Login";
@@ -10,28 +10,20 @@ import { Shop } from "./shop/Shop";
 import { Profile } from "./profile/Profile";
 import { Checkout } from "./checkout/Checkout";
 
-import getCartItems from "./getCartItems";
-
 export default function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem("userName"));
     const [userName, setUserName] = useState('');
     const [cartLength, setCartLength] = useState(0);
-    const handleLoginUpdate = () => {
-        const email = localStorage.getItem('userName');
-        if (email) {
-            setUserName(email);
-            setLoggedIn(true);
-            console.log('handleLoginUpdate called');
-            getCartItems(email)
-                .then(cartItems => setCartLength(cartItems.length))
-                .catch(error => console.error('Error fetching cart items:', error));
+
+    function handleLogin(userName) {
+        setUserName(userName);
+        setLoggedIn(true);
+    }
+    function updateCartLength(length) {
+        if (length !== cartLength) {
+            setCartLength(length);
         }
-    };
-
-    React.useEffect(() => {
-        handleLoginUpdate();
-    }, [loggedIn, userName]);
-
+    }
 
     return (
         <BrowserRouter>
@@ -43,12 +35,15 @@ export default function App() {
                         <NavLink className="flex items-center" to="/shop">
                             <span className="material-symbols-outlined">shopping_bag</span>
                         </NavLink>
-                        <NavLink className="flex items-center relative" to="/cart">
-                            <span className="material-symbols-outlined">shopping_cart</span>
-                            {loggedIn && cartLength > 0 && <span id="shopCartLogoBadge"
-                                                                 className="text-sm flex w-5 h-5 p-2 bg-red-400 justify-center items-center rounded-full absolute top-1/2 -right-2">
-                            {cartLength}</span>}
-                        </NavLink>
+                        {loggedIn &&
+                            <NavLink className="flex items-center relative disabled:text-gray-400" to="/cart">
+                                <span className="material-symbols-outlined">shopping_cart</span>
+                                    {cartLength > 0 &&
+                                        <span id="shopCartLogoBadge"
+                                              className="text-sm flex w-5 h-5 p-2 bg-red-400 justify-center items-center rounded-full absolute top-1/2 -right-2"
+                                        >{cartLength}</span>}
+                            </NavLink>
+                        }
                         <NavLink className="flex items-center" to="/profile">
                             <span className="material-symbols-outlined">person</span>
                             <span id="shopUser" className="text-sm font-semibold text-center">{userName}</span>
@@ -59,13 +54,13 @@ export default function App() {
 
                 <main className='flex overflow-hidden flex-col h-full' >
                     <Routes>
-                        <Route path='/' element={<Login onAuthChange={handleLoginUpdate} />}/>
-                        <Route path='/login' element={<Login setUserName={(userName) => setUserName(userName)} setLoggedIn={() => setLoggedIn(true)} />}/>
+                        <Route path='/' element={<Login onAuthChange={handleLogin} />}/>
+                        <Route path='/login' element={<Login onAuthChange={handleLogin} />}/>
                         <Route path='/create_account' element={<CreateAccount loggedIn={loggedIn} />}/>
                         <Route path='/about' element={<About loggedIn={loggedIn} />}/>
-                        <Route path='/cart' element={<Cart loggedIn={loggedIn} />}/>
+                        <Route path='/cart' element={<Cart loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/checkout' element={<Checkout loggedIn={loggedIn} />}/>
-                        <Route path='/shop' element={<Shop loggedIn={loggedIn} setCartLength={setCartLength} />}/>
+                        <Route path='/shop' element={<Shop loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/profile' element={<Profile loggedIn={loggedIn} />}/>
                         <Route path='*' element={<NotFound loggedIn={loggedIn} />}/>
                     </Routes>

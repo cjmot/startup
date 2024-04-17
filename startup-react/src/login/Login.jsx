@@ -7,19 +7,18 @@ export function Login({ onAuthChange }) {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const email = localStorage.getItem('userName');
-    React.useEffect(() => {
+    async function handleLoginUpdate() {
+        const email = localStorage.getItem('userName');
         if (email) {
-            onAuthChange();
-            navigate('/shop');
-
+            onAuthChange(email);
+            console.log('handleLoginUpdate called');
         }
-    })
+    }
 
     async function handleLogin() {
         const response = await loginUser(username, password);
         if (response) {
-            onAuthChange();
+            await handleLoginUpdate().catch(console.error);
             navigate('/shop');
         } else {
             alert('Login failed. Please check your credentials and try again.');

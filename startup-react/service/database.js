@@ -53,18 +53,18 @@ function getProducts() {
     return cursor.toArray();
 }
 
-function addCartItem(cartItem) {
-    cartCollection.insertOne((cartItem));
+async function addCartItem(cartItem) {
+    await cartCollection.insertOne((cartItem));
 }
 
-function getCartItems(email) {
-    const cursor = cartCollection.find({ email: email });
+async function getCartItems(email) {
+    const cursor = await cartCollection.find({ email: email });
     return cursor.toArray();
 }
 
-function updateCartItems(email, id) {
+async function updateCartItems(email, id) {
     const filter = { email: email, id: id };
-    cartCollection.deleteOne(filter);
+    await cartCollection.deleteOne(filter);
 }
 
 module.exports = {

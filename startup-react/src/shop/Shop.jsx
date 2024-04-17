@@ -1,31 +1,34 @@
-import React from 'react';
-import Products from './Products'
+import React, { useEffect } from 'react';
+import Products from './Products';
+import getCartItems from '../getCartItems';
 
-export function Shop( props ) {
+export function Shop(props) {
+    const [prevCartLength, setPrevCartLength] = React.useState(0);
+
+    async function fetchCartItems() {
+        const email = localStorage.getItem('userName');
+        try {
+            const items = await getCartItems(email);
+            if (prevCartLength !== items.length) {
+                props.setCartLength(items.length);
+                setPrevCartLength(items.length);
+                console.log('fetchCartItems called, cart:', items);
+            }
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCartItems().catch(console.error);
+    }, [props.cartLength]);
 
     return (
         <main className="overflow-y-auto flex-none h-full flex flex-col">
             <div className="text-5xl self-center pt-5 font-medium font-serif">Kingsland Store</div>
             <p className="text-xl self-center"></p>
             <section className="overflow-y-auto flex-1 h-full w-screen min-w-fit max-w-4 flex flex-row">
-                <div id="product-tabs" className="flex-none w-56 pl-10 pt-20 flex flex-col">
-                    <div id="byCollection"
-                         className="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY
-                        COLLECTION
-                    </div>
-                    <hr/>
-                    <div id="byBrand"
-                         className="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY
-                        BRAND
-                    </div>
-                    <hr/>
-                    <div id="byStyle"
-                         className="my-5 hover:underline hover:underline-offset-4 font-medium hover:cursor-pointer">BY
-                        STYLE
-                    </div>
-                    <hr/>
-                </div>
-                <div id="products" className="overflow-y-auto max-h-full mt-4 flex flex-row flex-wrap">
+                <div id="products" className="overflow-y-auto max-h-full mt-4 flex flex-row flex-wrap justify-center">
                     <Products loggedIn={props.loggedIn} setCartLength={props.setCartLength} />
                 </div>
             </section>
