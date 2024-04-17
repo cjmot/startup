@@ -8,12 +8,10 @@ export default async function addToCart(productTitle, products) {
             body: JSON.stringify(product),
         });
         if (!response.ok) {
-            console.log('Failed to add item to cart');
+            alert('Failed to add item to cart')
             return [];
         } else {
-            const cart = await response.json();
-            console.log(cart)
-            return cart;
+            return await response.json();
             // broadcastEvent(email, product.title);}
         }
 

@@ -3,18 +3,22 @@ import addToCart from './addToCart';
 
 export default function Product({ title, image, cost, loggedIn, setCartLength, products }) {
     async function addToCartHandler() {
-        try {
-            console.log('Adding to cart');
-            const updatedCart = await addToCart(title, products);
-            if (updatedCart && updatedCart.length > 0) {
-                console.log('Product.jsx.addToCartHandler: cart length:', updatedCart.length);
-                setCartLength(updatedCart.length);
-                console.log('cart length:', updatedCart.length);
-            } else {
-                console.error('Product.jsx.addToCartHandler: error with addToCart');
+        if (loggedIn) {
+            try {
+                console.log('Adding to cart');
+                const updatedCart = await addToCart(title, products);
+                if (updatedCart && updatedCart.length > 0) {
+                    setCartLength(updatedCart.length);
+                    console.log('Added to cart');
+                    alert("Item added to cart");
+                } else {
+                    console.error('Product.jsx.addToCartHandler: error with addToCart');
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
             }
-        } catch (error) {
-            console.error('Error adding to cart:', error);
+        } else {
+            alert(`Button will function upon login`)
         }
     }
 
@@ -36,7 +40,6 @@ export default function Product({ title, image, cost, loggedIn, setCartLength, p
                 type="button"
                 className="flex-none w-full h-12 bg-blue-400 px-4 py-2 text-sm hover:bg-blue-500 font-medium hover:font-bold hover:transition hover:cursor-pointer"
                 onClick={addToCartHandler}
-                disabled={!loggedIn}
             >
                 ADD TO CART
             </button>

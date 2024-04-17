@@ -13,18 +13,22 @@ export function Cart(props) {
 
     async function fetchCartItems() {
         const email = localStorage.getItem('userName');
-        try {
-            const items = await getCartItems(email);
-            setCartItems(items);
-            const total = items.reduce((acc, item) => acc + item.price, 0);
-            setSubtotal(total);
-            setIsEmpty(items.length === 0);
-            if (props.cartLength !== items.length) {props.setCartLength(items.length);}
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-        } finally {
-            setIsLoading(false);
-        }
+        if (props.loggedIn) {
+            try {
+                const items = await getCartItems(email);
+                setCartItems(items);
+                const total = items.reduce((acc, item) => acc + item.price, 0);
+                setSubtotal(total);
+                setIsEmpty(items.length === 0);
+                if (props.cartLength !== items.length) {
+                    props.setCartLength(items.length);
+                }
+            } catch (error) {
+                console.error('Error fetching cart items:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        } else {navigate('/shop')}
     }
 
     useEffect(() => {
