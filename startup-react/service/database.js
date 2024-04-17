@@ -39,9 +39,9 @@ async function createUser(email, password) {
         password: passwordHash,
         token: uuid.v4(),
     };
-    await userCollection.insertOne(user);
-
-    return user;
+    await userCollection.insertOne(user).then(() => {
+        return user;
+    });
 }
 
 function addProduct(product) {

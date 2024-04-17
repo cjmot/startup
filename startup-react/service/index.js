@@ -27,17 +27,14 @@ app.use('/api', apiRouter);
 
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) =>{
-    if (await DB.getUser(req.body.email)) {
-        return res.status(409).send({ msg: 'Existing user' });
-    } else {
-        const user = await DB.createUser(req.body.email, req.body.password);
-
-        setAuthCookie(res, user.token);
-
-        return res.send({
-            id: user._id,
+    DB.createUser(req.body.email, req.body.password)
+        .then(user => {
+            setAuthCookie(res, user.token)
+            return res.send({ id: user._id });})
+        .catch(error => {
+            return res.status(409).send(error);
         });
-    }
+
 });
 
 apiRouter.post('/auth/login', async (req, res) => {
