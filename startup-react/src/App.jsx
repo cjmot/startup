@@ -67,7 +67,7 @@ export default function App() {
                         <Route path='/create_account' element={<CreateAccount loggedIn={loggedIn} />}/>
                         <Route path='/about' element={<About loggedIn={loggedIn} />}/>
                         <Route path='/cart' element={<Cart loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
-                        <Route path='/checkout' element={<Checkout loggedIn={loggedIn} />}/>
+                        <Route path='/checkout' element={<Checkout loggedIn={loggedIn} setCartLength={updateCartLength} cartLength={cartLength} />}/>
                         <Route path='/shop' element={<Shop loggedIn={loggedIn} setUserName={() => setUserName} setCartLength={updateCartLength} cartLength={cartLength}/>}/>
                         <Route path='/profile' element={<Profile loggedIn={loggedIn} onLogout={handleLogout}/>}/>
                         <Route path='*' element={<NotFound loggedIn={loggedIn} />}/>
