@@ -29,6 +29,7 @@ export default function App() {
     function handleLogout() {
         setUserName('');
         setLoggedIn(false);
+        setCartLength(0);
     }
 
 

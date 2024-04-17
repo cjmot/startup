@@ -29,7 +29,7 @@ export function CartNotifications(props) {
                 message = event.value.msg;
             }
 
-            messageArray.push(
+            messageArray.unshift(
                 <div key={i} className='text-sm'>
                     <span className='font-bold'>{event.from} </span>
                     {message}
@@ -40,8 +40,8 @@ export function CartNotifications(props) {
     }
 
     return (
-        <div id='users' className='absolute self-start w-1/3 '>
-            <div id='messages' className='hover:overflow-y-auto overflow-hidden h-20'>{createMessageArray()}</div>
+        <div id='users' className='absolute top-0 self-start justify-self-start w-1/3 '>
+            <div id='messages' className='hover:overflow-y-auto hover:h-48 overflow-hidden h-20'>{createMessageArray()}</div>
         </div>
     );
 }

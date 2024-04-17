@@ -1,6 +1,5 @@
 export default async function createUser(userName, password) {
     try {
-        console.log('trying to create user')
         const response = await fetch("/api/auth/create", {
             method: 'POST',
             body: JSON.stringify({email: userName, password: password}),
@@ -9,7 +8,6 @@ export default async function createUser(userName, password) {
             },
         });
         const responseBody = await response.json();
-        console.log(responseBody);
         return !!(response.ok && responseBody);
     } catch (error) {
         console.error("Error creating account:", error);

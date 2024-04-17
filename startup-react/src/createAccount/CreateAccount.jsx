@@ -16,10 +16,12 @@ export function CreateAccount(props) {
             alert("Passwords must match");
             return;
         }
+        console.log('Creating account');
         createUser(userNameInput, passwordInput)
             .then((response) => {
                 if (response === true) {
                     localStorage.setItem("userName", userNameInput);
+                    console.log('Account created');
                     alert(`Account created successfully.`);
                     navigate('/');
                 } else {

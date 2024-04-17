@@ -68,6 +68,23 @@
 - Data send over WebSocket connection: shop.js (addToCart() => broadcastEvent())
 - WebSocket data displayed in the application interface: shop.js (displayMsg())
 
+### React Deliverable
+- Deployed simon websocket deliverable
+- made new directories and moved service files to service and other files to src
+- added vite, tailwind, react, react-router, and react-router-dom to project
+- made index.jsx, index.html files in root directory
+- made App.jsx file
+- made routes to different pages with react-router-dom
+- converted old js/html files into react jsx files with dependencies
+- did cleanup on all files, optimising along the way
+- added websocket functionality
+- deleted old files
+- last cleanup, updated readme.md
+- Frontend websocket: /src/cartNotifications
+- login: /src/login, /src/createAccount
+- outside fetch: /src/shop/getProducts
+- api calls: login, cart, shop
+
 ### Kingsland
 ### Description
 Buying things online is at an all-time high. In this world of people selling whatever they want wherever they want, and sellers buying reviews of their products to put more money in their pocket, it is important to have a place where product reviews are genuine, and you can trust the opinions of others on what is being sold to you. That being said, Kingsland will be a place where you can do just that. Kingsland will allow you to connect with other people based on the reviews they wrote, and ask them personally about the product. Not only that, but the products offered are listed based on reviews and wants, there are no sponsored products or paid reviews. Everything is genuine.
