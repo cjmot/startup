@@ -2373,3 +2373,271 @@ ReactDOM.render(<UseEffectHookDemo />, document.getElementById('root'));
 
 ### Simon React
 - I wish we started with React, transitioning everything is going to be VERY complicated.
+
+### TypeScript
+- adds static type checking to JS.
+- provides type checking while you are writing the code to prevent mistakes like using a string when a number is expected.
+- consider:
+```js
+function increment(value){
+    return value + 1;
+}
+
+let count = 'one';
+console.log(increment(count));
+```
+- when this executes the console will log one1 because count variable was accidentally initialized with a string instead of a number
+- with TypeScript you expplicitly define the types, and as the JS is transpiled (with something like babel), an error will be generated long before the code is seen by user.
+- to provide type safety for our increment function, it would look like this:
+```typescript
+function increment(value: number) {
+    return value + 1;
+}
+
+let count: number = 'one';
+console.log(increment(count));
+```
+- in addition to defining types for function parameters, you can define the types of object props.
+  - ex. when defining state for React class style component, you can specify the types of all the state and property values
+```
+export class About extends React.Component {
+    state: {
+        imageUrl: string;
+        quote: string;
+        price: number;
+    };
+    
+    constructor(props: { price: number }) {
+        super(props);
+        
+        this.state = {
+            imageUrl: '',
+            quote: 'loading...',
+            price: props.price,
+        };
+    }
+}
+```
+- you can likewise specify the type of React function style component's props w/ inline object def
+```typescript jsx
+function Clicker(props: { initialCount: number }) {
+    const [count, updateCount] = React.useState(props.initialCount);
+    
+    return <div onClick={() => updateCount(1 + count)}>Click Count: {count}</div>;
+}
+```
+
+#### Interfaces
+- because it is so common to define object prop types, TypeScript introduced use of interface keyword to define collection of params and types that object must contain in order to satisfy the interface type.
+```typescript
+interface Book {
+    title: string;
+    id: number;
+}
+```
+- then create an object and pass it to a function that requires the interface
+```typescript
+function catalog(book: Book) {
+    console.log(`Cataloging ${book.title} with ID ${book.id}`);
+}
+
+const myBook = { title: 'Essentials', id: 2938 };
+catalog(myBook);
+```
+
+#### Beyond type checking
+- TS also provides other benefits, such as warning you of potential uses of an uninitialized variable.
+- correct by using an if block
+```typescript
+const containerEl = document.querySelector<HTMLElement>('#picture');
+if (containerEl) {
+    const width = containerEl.offsetWidth;
+}
+```
+- in above ex. return type is coerced for the querySelector call. this is required because the assumed return type for that function is the base class Element, but query will return subclass HTMLElement
+  - so we need to cast that to the subclass with querySelector<HTMLElement>() syntax
+
+#### Unions
+- TS introduces ability to define the possible values for a new type. Useful for doing things like defining an enumberable
+- with plain JS you might create an enumerable with a class
+```js
+export class AuthState {
+    static Unknown = new AuthState('unknown');
+    static Authenticated = new AuthState('authenticated');
+    static Unauthenticated = new AuthState('unauthenticated');
+    
+    constructor(name) {
+        this.name = name;
+    }
+}
+```
+- with TS you can define this by declaring a new type and defining what its possible values are
+```typescript
+type Authstate = 'unknown' | 'authenticated' | 'unauthenticated';
+
+let auth: Authstate = 'authenticated';
+```
+- You can also use unions to specify all the possible types that a variable can represent
+```typescript
+function square(n: number | string) {
+    if (typeof n === 'string') {
+        console.log(`${n}^2`);
+    } else {
+        console.log(n * n);
+    }
+}
+```
+
+#### Using TypeScript
+- if you want to experiment use CodePen or official TypeScript playground. 
+  - playground has the advantage of showing you inline errors and what the resulting JS will be
+- to use TypeScript in your web app you can create your project using vite. Vite knows how to use typescript without any additional configuration
+- if you want to convert an existing app, then install the npm typescript package to your dev dependencies
+- this will only include typescript package when you are developing and will not distribute it with a production bundle.
+- once it is installed, then configure how you want TS to interact with your code by creating a tsconfig.json file
+- if proj structure is configured to have your source code in a directory named src, and you want to output to a directory named build then use this:
+```
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "build",
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
+```
+
+### Performance monitoring
+- performance of your app plays a huge role in determining user satisfaction
+- to prevent losing users, you want app to load in about one second.
+  - you need to consistently measure and improve the responsiveness of your app.
+  - main things you want to monitor include
+    - Browser app latency
+    - Network latency
+    - Service endpoint latency
+- latency defined as delay that your user experiences before request is satisfied
+#### Browser app latency
+- impacted by speed of the user's device, the amount of data that needs to be processed, and the time complexity of the processing algorithm
+- when a user requests your app in a browser, the browser will request your index.html page first.
+- followed by requests for any files that index.html links, such as js, css, video, and image files.
+- once JS is loaded, it will start making requests to services. Includes any endpoints that you provide as well as ones provided by third parties.
+- each requests takes time for the browser to load and render
+- page with lots of large images and lots of service calls, will take longer than a page that only loads simple text from a single HTML file
+- Likewise, if your JS does significant processing while page loading, then your user will notice the resulting latency
+- you want to make app processing as asynchronous as possible so that it is done in the background without impacting the user experience
+- you can reduce the impact of file size, and HTTP requests in general, by doing on or more of the following
+  - use compression when transferring files over HTTP
+  - reduce the quality of images and video to the lowest acceptable level
+  - minify JS and CSS. Removes all whitespace and creates smaller variable names
+  - use HTTP/2 or HTTP/3 so that your HTTP headers are compressed and the communication protocol is more efficient.
+- you can also reduce the number of requests you make by combining the responses from multiple endpoint requests into a single request.
+- this eliminates duplicated fields, but also decreases the overhead associated with each request
+
+#### Network latency
+- you pay a latency price for every network request that you make.
+- you want to avoid making unnecessary or large requests
+- network latency is impacted by the amount of data that you send, the amount of data a user can receive per second (called bandwidth), and distance the data has to travel
+- If the user has a low bandwidth connection that can only receive data at rates lower than 1mb/s, then you need to be careful to reduce the number of bytes that you send to that user.
+- global latency is also a problem for users. If your app is hosted in a data center in San Fran, and used by someone living in Nairobi, then  there will be an additional 100/400ms latency for each request
+- you man mitigate the impact of global latency by hosting your app files in data centers that are close to the users you are trying to serve. 
+- Apps that are seeking to reach a global audience will often host their app from dozens of places around the world
+
+#### Service endpoint latency
+- impacted by the number of requests that are made and the amount of time that it takes to process each request
+- When a web app makes a request to a service endpoint there is usually some functionality in the application that is blocked until the endpoint returns
+  - ex if a user requests the scores for the game, the app will delay rendering until those scores are returned
+- you want to reduce latency of your endpoints as much as possible. ideally less than 10ms
+
+#### Performance tools
+- chrome network tab
+  - you cna see the network requests made by your app and the time necessary for each request, by using the browser's debugging tools.
+  - this will show you what files and endpoins are requested and how long they are taking. 
+    - if you sort by time or size, it will be clearer what areas need your attention. 
+    - make sure you clear your cache before running tests so that you can see what the real latency is and not just the time it takes to load from the browser's cache
+- Simulating real users
+  - network tools also allows you to simulate low bandwidth connections by throttling your network. 
+    - you can simulate a 3G network connection that you would find on a low end mobile phone
+    - throttling while testing is really useful since web developers often hav high end computers and significant network bandwidth.
+    - that means you are not having the same experience as your users, and you will be surprised when they don't use your app because it is so slow
+- Chrome Lighthouse
+  - you can also use lighthouse tool to run an analysis of your app. this will give you an average performance rating based upon the initial load time, longest content paint, and time before the user can interact with the page.
+- Chrome performance tab
+  - when you are ready to dig into your app's frontend performance make sure you experiment with the Chrome debugger's performance tab. 
+    - this breaks down the details of your app based upon discrete intervals of time so that you can isolate where things are running slow
+  - You start profiling teh performance by pressing the record button and then interacting with your app. 
+    - Chrome will record memory usage, screenshots, and timing info. You can then press the stop recording button and review the data.
+- Global speed tests
+  - You also want to test your app  from different locations around the world. There are many online providers that will run these tests for you
+    - Pingdom.com
+      - will give suggestions
+    - DotComTools allows you to run tests from multiple locations at once.
+
+### UX design
+- Properly considering the user experience (UX) of your app will make all the difference in your success.
+- Focusing first on tech, cost, or revenue tends to lead to an unsatisfying user experience.
+- instead consider why someone is using your app, how they want to interact, how visually appealing it is, and how easy it is to get something done.
+#### Design as a story
+- often useful to think of user experience as a story. Consider background plot, user entering the stage, interacting with other actors, and getting the audience to applaud
+- there is always a reason someone is using your app.
+  - if you can clearly define background plot, then experience will better match the user's expectation
+  - if you know what results in a satisfied audience, then you build the app experience around delivering that result
+- Consider tourism app for Philadelphia. 
+  - they know user visits because they want to have an experience in Philly. App immediately provides a time relevant proposal for that experience.
+  - all navigation options for having successful experience(events, food, deals, and trip planning) are immediately accessible.
+
+#### Simplicity
+- Google broke all rules for web app design when they released their homepage in 1998
+- Previously, common for app designers to pile everything they could into the initial view of the app
+  - ads, navigation options, lots of hyperlinks, and color choices.
+- Key point is that simplicity attracts user's attention and engages them in the app experience. 
+- Building off of google's positive reaction, other major apps immediately followed their example.
+- Keep things focused on a single purpose: 
+  - creating an account, viewing images, or beginning your travel experience.
+
+#### Consistency
+- tension with web apps between being consistent with how other apps work and being unique so that your experience stands out.
+- avoid being so different that a user has to think hard in order to use your app.
+  - usually avoided by using standard conventions that a user expects to find on a web app.
+- What a standard layout is defined to be will migrate over time as new trends in app fashion seek to make things look fresh
+
+#### Navigation
+- user should never get lost while using your app.
+- to help orient your user you want to carefully design the flow of the application and provide the proper navigational controls
+- Application map
+  - first step in building your app should be to design an application map that has all the views that you will present to the user. 
+  - this helps clarify the functional pieces of the app and their relationship to each other. 
+    - ex. if you were building a music player you might start with a landing page that displays some marketing info and allows the user to create an account or log in.
+    - if already logged in, then they start with a dashboard that shows recent or suggested songs. 
+    - From there they can either search the music catalog, navigate to a collection of songs based on playlist, album, or artist, or go to an individual song
+  - if app map starts looking like a gov bureaucracy then you probably want to reconsider interrelation of functionality.
+  - convoluted app map is strong indicator that the user experience will be likewise convoluted.
+- Device controls
+  - with concise app map in place, you can design navigational controls that allow the user to successfully use the app.
+  - you want to make sure the navigational controls provided by device are completely supported.
+- Breadcrumb
+  - you always want to indicate where the user is, where they came from, and where they can go. You can do this with a breadcrumb control that lists the path the user took to get where they are
+  - breadcrumb quickly orients the user and also allows them to jump up the navigational path
+- Common actions
+  - You also want to anticipate where a user would commonly want to go based upon the view that they are in. 
+    - For example, if they are playing a song by one artist, it is common that they will want to view related artists.
+    - you want to provide a navigational link that will take them to a search view with a prepopulated query for related artists
