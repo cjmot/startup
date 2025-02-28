@@ -105,9 +105,3 @@ Buying things online is at an all-time high. In this world of people selling wha
   - Products and product information will be stored in the database.
 - **WebSocket Data**
   - Prices will change in real time, and users can opt in to receive email notifications when the prices of favorited items change.
-
-### Design 
-
-![EZ-DROP Sketch](ez_drop_mock.png)
-
-![kingslandui](kingslandui.jpeg)
